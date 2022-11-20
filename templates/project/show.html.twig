@@ -22,6 +22,11 @@
         </tbody>
     </table>
 
+    <h2>Médias</h2>
+    <a href="{{ path('app_media_new', {'project': project.id}) }}" class="btn btn-primary">Ajouter un média</a>
+
+    {% include grid.theme ~ '/datagrid.html.twig' %}
+
     <a href="{{ path('app_project_index') }}">back to list</a>
 
     <a href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>

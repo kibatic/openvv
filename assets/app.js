@@ -14,4 +14,3 @@ import './styles/photo-sphere-viewer.min.css';
 
 // start the Stimulus application
 import './bootstrap';
-import './panorama';

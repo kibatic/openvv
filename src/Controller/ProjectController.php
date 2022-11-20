@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\Project;
 use App\Form\ProjectType;
+use App\Repository\MediaRepository;
 use App\Repository\ProjectRepository;
+use Kibatic\DatagridBundle\Grid\GridBuilder;
+use Kibatic\DatagridBundle\Grid\Template;
+use Kibatic\DatagridBundle\Grid\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,19 +19,47 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectController extends AbstractController
 {
     #[Route('/', name: 'app_project_index', methods: ['GET'])]
-    public function index(ProjectRepository $projectRepository): Response
-    {
+    public function index(
+        Request $request,
+        ProjectRepository $projectRepository,
+        GridBuilder $gridBuilder,
+    ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // get current user
         $user = $this->getUser();
 
-        // get all projects for the current user
-        $projects = $projectRepository->findBy(['owner' => $user]);
+        // create query builder filtered by current user
+        $queryBuilder = $projectRepository->createQueryBuilder('p')
+            ->where('p.owner = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.createdAt', 'DESC');
+        ;
+        $grid = $gridBuilder
+            ->create($queryBuilder, $request)
+            ->setTheme(Theme::BOOTSTRAP5)
+            ->addColumn('Name', 'name')
+            ->addColumn(
+                'Created at',
+                'createdAt',
+                Template::DATETIME
+            )
+            ->addColumn(
+                'Actions',
+                fn(Project $project) => [
+                    [
+                        'name' => 'Show',
+                        'url' => $this->generateUrl('app_project_show', ['id' => $project->getId()]),
+                    ]
+                ],
+                Template::ACTIONS
+            )
+            ->getGrid()
+        ;
 
         return $this->render('project/index.html.twig', [
-            'projects' => $projects,
+            'grid' => $grid,
         ]);
     }
 
@@ -57,8 +90,12 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
-    public function show(Project $project): Response
-    {
+    public function show(
+        Project $project,
+        MediaRepository $mediaRepository,
+        GridBuilder $gridBuilder,
+        Request $request
+    ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -70,8 +107,36 @@ class ProjectController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
+        // create query builder for Media filtered by current user
+        $queryBuilder = $mediaRepository->createQueryBuilder('m')
+            ->where('m.project = :project')
+            ->setParameter('project', $project)
+            ->orderBy('m.createdAt', 'DESC')
+        ;
+        $grid = $gridBuilder
+            ->create($queryBuilder, $request)
+            ->setTheme(Theme::BOOTSTRAP5)
+            ->addColumn(
+                'Created at',
+                'createdAt',
+                Template::DATETIME
+            )
+            ->addColumn(
+                'Actions',
+                fn(Media $media) => [
+                    [
+                        'name' => 'Show',
+                        'url' => $this->generateUrl('app_media_show', ['id' => $media->getId()]),
+                    ]
+                ],
+                Template::ACTIONS
+            )
+            ->getGrid()
+        ;
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
+            'grid' => $grid,
         ]);
     }
 

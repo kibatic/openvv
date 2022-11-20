@@ -23,6 +23,9 @@ RUN corepack enable
 RUN git config --global user.email "dev@localhost"
 RUN git config --global user.name "dev"
 
+ADD docker/nginx.conf /etc/nginx/nginx.conf
+ADD docker/20-tuning.ini /etc/php/8.1/fpm/conf.d/20-tuning.ini
+
 # hack : si le CMD est pris dans le cache, il ajoute un bach -c #(nop) devant la commande
 # => on remet la commande ici pour qu'elle soit rebuildée à chaque fois
 # cf commentaires de https://stackoverflow.com/questions/66638179/docker-image-command-starts-with-bin-sh-c-nop-cmd
