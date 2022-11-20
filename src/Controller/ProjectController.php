@@ -51,6 +51,10 @@ class ProjectController extends AbstractController
                     [
                         'name' => 'Show',
                         'url' => $this->generateUrl('app_project_show', ['id' => $project->getId()]),
+                    ],
+                    [
+                        'name' => 'Share',
+                        'url' => $this->generateUrl('app_share_new', ['id' => $project->getId()]),
                     ]
                 ],
                 Template::ACTIONS

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Share project{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Share project</button>
+    {{ form_end(form) }}
+{% endblock %}
