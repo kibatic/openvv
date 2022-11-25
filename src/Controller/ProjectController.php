@@ -191,6 +191,25 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    #[Route('/gallery/{shareUid}', name: 'app_project_gallery', methods: ['GET'])]
+    public function gallery(
+        Project $project,
+        MediaRepository $mediaRepository,
+        Request $request
+    ): Response {
+        $mediaList = $mediaRepository->createQueryBuilder('m')
+            ->where('m.project = :project')
+            ->setParameter('project', $project)
+            ->orderBy('m.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return $this->render('project/gallery.html.twig', [
+            'mediaList' => $mediaList,
+            'project' => $project
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_project_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Project $project, ProjectRepository $projectRepository): Response
     {
