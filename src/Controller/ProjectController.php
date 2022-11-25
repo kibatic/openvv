@@ -47,16 +47,27 @@ class ProjectController extends AbstractController
             )
             ->addColumn(
                 'Actions',
-                fn(Project $project) => [
-                    [
+                function (Project $project) {
+                    $showButton = [
                         'name' => 'Show',
                         'url' => $this->generateUrl('app_project_show', ['id' => $project->getId()]),
-                    ],
-                    [
-                        'name' => 'Share',
-                        'url' => $this->generateUrl('app_share_new', ['id' => $project->getId()]),
-                    ]
-                ],
+                    ];
+                    if ($project->isShareActive()) {
+                        $shareButton = [
+                            'name' => 'already shared',
+                            'url' => "#",
+                        ];
+                    } else {
+                        $shareButton = [
+                            'name' => 'Share',
+                            'url' => $this->generateUrl('app_share_new', ['id' => $project->getId()]),
+                        ];
+                    }
+                    return [
+                        $showButton,
+                        $shareButton
+                    ];
+                },
                 Template::ACTIONS
             )
             ->getGrid()
@@ -141,6 +152,25 @@ class ProjectController extends AbstractController
         return $this->render('project/show.html.twig', [
             'project' => $project,
             'grid' => $grid,
+        ]);
+    }
+
+    #[Route('/view/{shareUid}', name: 'app_project_view', methods: ['GET'])]
+    public function view(
+        Project $project,
+        MediaRepository $mediaRepository,
+        Request $request
+    ): Response {
+        $mediaList = $mediaRepository->createQueryBuilder('m')
+            ->where('m.project = :project')
+            ->setParameter('project', $project)
+            ->orderBy('m.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return $this->render('project/view.html.twig', [
+            'mediaList' => $mediaList,
+            'project' => $project
         ]);
     }
 

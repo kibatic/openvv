@@ -36,6 +36,9 @@ class Media
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $uploadedAt = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     // create constructor
     public function __construct()
     {
@@ -124,6 +127,18 @@ class Media
     public function setUploadedAt(?\DateTimeImmutable $uploadedAt): self
     {
         $this->uploadedAt = $uploadedAt;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

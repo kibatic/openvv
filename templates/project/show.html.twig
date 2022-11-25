@@ -3,7 +3,7 @@
 {% block title %}Project{% endblock %}
 
 {% block body %}
-    <h1>Project</h1>
+    <h1>Project : {{ project.name }}</h1>
 
     <table class="table">
         <tbody>
@@ -16,8 +16,8 @@
                 <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Name</th>
-                <td>{{ project.name }}</td>
+                <th>Sharing URL</th>
+                <td><a href="{{ url('app_project_view', {shareUid: project.shareUid}) }}">{{ url('app_project_view', {shareUid: project.shareUid}) }}</a></td>
             </tr>
         </tbody>
     </table>
