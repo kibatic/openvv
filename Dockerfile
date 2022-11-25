@@ -5,6 +5,7 @@ RUN apt-get -qqq update && DEBIAN_FRONTEND=noninteractive apt-get install -qqq -
         php8.1-pgsql \
         php8.1-curl \
         php8.1-zip \
+    	php8.1-imagick \
         gnupg2 && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

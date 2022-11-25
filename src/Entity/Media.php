@@ -45,6 +45,15 @@ class Media
         $this->createdAt = new \DateTimeImmutable();
     }
 
+    /**
+     * used by the vichDirectoryNamer to save the media in the right directory.
+     * With this directory tree, the media are saved by project owner and then by project.
+     */
+    public function vichDirectoryName(): string
+    {
+        return $this->getProject()->getOwner()->getId().'/'.$this->getProject()->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

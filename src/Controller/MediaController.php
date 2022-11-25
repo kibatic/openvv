@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Media;
 use App\Entity\Project;
 use App\Form\MediaType;
+use App\Service\MediaManager;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,5 +82,23 @@ class MediaController extends AbstractController
         }
 
         return $downloadHandler->downloadObject($media, 'mediaFile', null, null, false);
+    }
+    #[Route('/media/{id}/thumbnail', name: 'app_media_thumbnail', methods: ['GET'])]
+    public function thumbnail(
+        Media $media,
+        FilesystemOperator $thumbnailStorage,
+        MediaManager $mediaManager
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        // deny if the user is not the owner of the project
+        if ($user !== $media->getProject()->getOwner()) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+        $mediaManager->generateThumbnail($media);
+        $imageContent = $thumbnailStorage->read($media->vichDirectoryName().'/'.$media->getMediaName());
+        $contentType = $thumbnailStorage->mimeType($media->vichDirectoryName().'/'.$media->getMediaName());
+        return new Response($imageContent, 200, ['Content-Type' => $contentType]);
     }
 }

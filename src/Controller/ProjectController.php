@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/project')]
 class ProjectController extends AbstractController
@@ -109,7 +110,8 @@ class ProjectController extends AbstractController
         Project $project,
         MediaRepository $mediaRepository,
         GridBuilder $gridBuilder,
-        Request $request
+        Request $request,
+        RouterInterface $router
     ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -132,9 +134,24 @@ class ProjectController extends AbstractController
             ->create($queryBuilder, $request)
             ->setTheme(Theme::BOOTSTRAP5)
             ->addColumn(
+                'Media',
+                fn(Media $media) => sprintf(
+                    '<img src="%s" alt="%s" width="100" />',
+                    $router->generate('app_media_thumbnail', [ 'id' => $media->getId() ]),
+                    $media->getName()
+                ),
+                Template::TEXT,
+                [ 'escape' => false ]
+
+            )
+            ->addColumn(
                 'Created at',
                 'createdAt',
                 Template::DATETIME
+            )
+            ->addColumn(
+                'Name',
+                'name'
             )
             ->addColumn(
                 'Actions',

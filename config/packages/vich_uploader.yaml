@@ -1,5 +1,6 @@
 vich_uploader:
     db_driver: orm
+    storage: flysystem
 
     metadata:
         type: attribute
@@ -7,5 +8,11 @@ vich_uploader:
     mappings:
         media:
             uri_prefix: /media
-            upload_destination: '%kernel.project_dir%/var/storage/media'
+            upload_destination: media.storage
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            directory_namer:
+                service: Vich\UploaderBundle\Naming\PropertyDirectoryNamer
+                options: { property: 'vichDirectoryName', transliterate: false }
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
