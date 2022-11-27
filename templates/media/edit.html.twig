@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit the media {{ media.name }}{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Update media</button>
+    {{ form_end(form) }}
+{% endblock %}

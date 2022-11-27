@@ -19,7 +19,7 @@ class MediaType extends AbstractType
                 'label' => 'Name',
             ])
             ->add('mediaFile', VichImageType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Media',
             ])
         ;

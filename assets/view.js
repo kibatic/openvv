@@ -2,9 +2,6 @@ import { Viewer } from 'photo-sphere-viewer';
 import { VirtualTourPlugin } from 'photo-sphere-viewer/dist/plugins/virtual-tour';
 import { MarkersPlugin } from 'photo-sphere-viewer/dist/plugins/markers';
 
-import 'photo-sphere-viewer/dist/plugins/virtual-tour.css';
-import 'photo-sphere-viewer/dist/plugins/markers.css';
-
 const container = document.querySelector('#viewer');
 
 // get the panorama URL from the container's data attribute

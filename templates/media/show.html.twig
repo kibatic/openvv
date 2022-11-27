@@ -8,8 +8,14 @@
 {% block title %}Media{% endblock %}
 
 {% block body %}
-    <h1>Media display</h1>
+    <h1>{{ media.name }}</h1>
 
     <div id="viewer" style="width: 100%; height: 80vh;" data-panorama="{{ path('app_media_download', {id: media.id}) }}"></div>
+
+
+    <form method="post" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ media.id) }}">
+        <button class="btn btn-outline-danger">Delete</button>
+    </form>
 
 {% endblock %}

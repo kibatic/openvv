@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'share-base.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -8,12 +8,12 @@
 {% block title %}Project: {{ project.name }}{% endblock %}
 
 {% block body %}
-    <h1>Project</h1>
-
     <div
             id="viewer"
-            style="width: 100%;height: 80vh;"
-            data-panorama="{{ path('app_media_download', {id: mediaList.0.id}) }}"
+            style="width: 100vw;height: 100vh;"
+            data-items="{{ items|json_encode|escape('html_attr') }}"
+            data-caption="{{ project.name }}"
+            data-panorama="{{ items.0.panorama }}"
     >
 
     </div>

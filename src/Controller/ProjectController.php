@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\MediaRepository;
 use App\Repository\ProjectRepository;
+use App\Viewers\GalleryViewer;
 use Kibatic\DatagridBundle\Grid\GridBuilder;
 use Kibatic\DatagridBundle\Grid\Template;
 use Kibatic\DatagridBundle\Grid\Theme;
@@ -53,6 +54,10 @@ class ProjectController extends AbstractController
                         'name' => 'Show',
                         'url' => $this->generateUrl('app_project_show', ['id' => $project->getId()]),
                     ];
+                    $editButton = [
+                        'name' => 'Edit',
+                        'url' => $this->generateUrl('app_project_edit', ['id' => $project->getId()]),
+                    ];
                     if ($project->isShareActive()) {
                         $shareButton = [
                             'name' => 'already shared',
@@ -66,6 +71,7 @@ class ProjectController extends AbstractController
                     }
                     return [
                         $showButton,
+                        $editButton,
                         $shareButton
                     ];
                 },
@@ -159,6 +165,10 @@ class ProjectController extends AbstractController
                     [
                         'name' => 'Show',
                         'url' => $this->generateUrl('app_media_show', ['id' => $media->getId()]),
+                    ],
+                    [
+                        'name' => 'Edit',
+                        'url' => $this->generateUrl('app_media_edit', ['id' => $media->getId()]),
                     ]
                 ],
                 Template::ACTIONS
@@ -195,6 +205,7 @@ class ProjectController extends AbstractController
     public function gallery(
         Project $project,
         MediaRepository $mediaRepository,
+        GalleryViewer $galleryViewer,
         Request $request
     ): Response {
         $mediaList = $mediaRepository->createQueryBuilder('m')
@@ -204,9 +215,13 @@ class ProjectController extends AbstractController
             ->getQuery()
             ->getResult()
         ;
+
+        $items = $galleryViewer->getItems($project);
+
         return $this->render('project/gallery.html.twig', [
             'mediaList' => $mediaList,
-            'project' => $project
+            'project' => $project,
+            'items' => $items
         ]);
     }
 
