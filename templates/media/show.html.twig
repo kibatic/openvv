@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-aside.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -19,4 +19,28 @@
         <button class="btn btn-outline-danger">Delete</button>
     </form>
 
+{% endblock %}
+
+{% block aside %}
+    <h2>Links from this media</h2>
+    {% for link in fromMeLinks %}
+        <div class="card mb-3 bg-light">
+            <div class="card-body">
+                {% if link.isComplete %}
+                    <span class="link-badge badge text-bg-success">ok</span>
+                {% else %}
+                    <span class="link-badge badge text-bg-warning">uncomplete</span>
+                {% endif %}
+                <small>From: </small>{{ link.sourceMedia.name }}<br/>
+                <small>To: </small>{{ link.targetMedia.name }}<br/>
+                <a href="{{ path('app_link_edit', {id: link.id}) }}" class="card-link">Edit link</a>
+                <a href="#" class="card-link">Delete link</a>
+            </div>
+        </div>
+    {% endfor %}
+    <h2>Create a link</h2>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Add link</button>
+    {{ form_end(form) }}
 {% endblock %}

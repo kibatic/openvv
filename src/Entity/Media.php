@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MediaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -39,10 +41,23 @@ class Media
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'sourceMedia', targetEntity: Link::class, orphanRemoval: true)]
+    private Collection $fromMeLinks;
+
+    #[ORM\OneToMany(mappedBy: 'targetMedia', targetEntity: Link::class, orphanRemoval: true)]
+    private Collection $toMeLinks;
+
     // create constructor
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->fromMeLinks = new ArrayCollection();
+        $this->toMeLinks = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     /**
@@ -148,6 +163,66 @@ class Media
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Link>
+     */
+    public function getFromMeLinks(): Collection
+    {
+        return $this->fromMeLinks;
+    }
+
+    public function addFromMeLink(Link $fromMeLink): self
+    {
+        if (!$this->fromMeLinks->contains($fromMeLink)) {
+            $this->fromMeLinks->add($fromMeLink);
+            $fromMeLink->setSourceMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFromMeLink(Link $fromMeLink): self
+    {
+        if ($this->fromMeLinks->removeElement($fromMeLink)) {
+            // set the owning side to null (unless already changed)
+            if ($fromMeLink->getSourceMedia() === $this) {
+                $fromMeLink->setSourceMedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Link>
+     */
+    public function getToMeLinks(): Collection
+    {
+        return $this->toMeLinks;
+    }
+
+    public function addToMeLink(Link $toMeLink): self
+    {
+        if (!$this->toMeLinks->contains($toMeLink)) {
+            $this->toMeLinks->add($toMeLink);
+            $toMeLink->setTargetMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToMeLink(Link $toMeLink): self
+    {
+        if ($this->toMeLinks->removeElement($toMeLink)) {
+            // set the owning side to null (unless already changed)
+            if ($toMeLink->getTargetMedia() === $this) {
+                $toMeLink->setTargetMedia(null);
+            }
+        }
 
         return $this;
     }

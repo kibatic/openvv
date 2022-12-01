@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Link;
 use App\Entity\Media;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\LinkType;
 use App\Form\MediaType;
+use App\Repository\LinkRepository;
 use App\Repository\MediaRepository;
 use App\Service\MediaManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,9 +56,12 @@ class MediaController extends AbstractController
         ]);
     }
 
-    #[Route('/media/{id}', name: 'app_media_show', methods: ['GET'])]
+    #[Route('/media/{id}', name: 'app_media_show', methods: ['GET', 'POST'])]
     public function show(
-        Media $media
+        Media $media,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        LinkRepository $linkRepository,
     ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -65,8 +71,28 @@ class MediaController extends AbstractController
             throw $this->createAccessDeniedException('You are not allowed to access this page.');
         }
 
+        // create a form for a new Link
+        $link = new Link();
+        $link->setSourceMedia($media);
+        $form = $this->createForm(LinkType::class, $link);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($link);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
+        }
+
+        $qb = $linkRepository->createQueryBuilder('l')
+            ->where('l.sourceMedia = :media')
+            ->setParameter('media', $media)
+            ->orderBy('l.createdAt', 'DESC');
+        $fromMeLinks = $qb->getQuery()->getResult();
+
         return $this->render('media/show.html.twig', [
-            'media' => $media
+            'media' => $media,
+            'form' => $form->createView(),
+            'fromMeLinks' => $fromMeLinks,
         ]);
     }
 

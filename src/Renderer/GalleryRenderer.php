@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Viewers;
+namespace App\Renderer;
 
 use App\Entity\Project;
 use App\Repository\MediaRepository;
 use Symfony\Component\Routing\RouterInterface;
 
-class GalleryViewer
+class GalleryRenderer
 {
     public function __construct(
         private readonly MediaRepository $mediaRepository,

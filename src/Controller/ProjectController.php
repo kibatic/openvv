@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Media;
 use App\Entity\Project;
 use App\Form\ProjectType;
+use App\Renderer\GalleryRenderer;
 use App\Repository\MediaRepository;
 use App\Repository\ProjectRepository;
 use App\Viewers\GalleryViewer;
@@ -42,6 +43,7 @@ class ProjectController extends AbstractController
             ->create($queryBuilder, $request)
             ->setTheme(Theme::BOOTSTRAP5)
             ->addColumn('Name', 'name')
+            ->addColumn('Renderer', 'renderer.name')
             ->addColumn(
                 'Created at',
                 'createdAt',
@@ -151,11 +153,6 @@ class ProjectController extends AbstractController
 
             )
             ->addColumn(
-                'Created at',
-                'createdAt',
-                Template::DATETIME
-            )
-            ->addColumn(
                 'Name',
                 'name'
             )
@@ -205,7 +202,7 @@ class ProjectController extends AbstractController
     public function gallery(
         Project $project,
         MediaRepository $mediaRepository,
-        GalleryViewer $galleryViewer,
+        GalleryRenderer $galleryRenderer,
         Request $request
     ): Response {
         $mediaList = $mediaRepository->createQueryBuilder('m')
@@ -216,7 +213,7 @@ class ProjectController extends AbstractController
             ->getResult()
         ;
 
-        $items = $galleryViewer->getItems($project);
+        $items = $galleryRenderer->getItems($project);
 
         return $this->render('project/gallery.html.twig', [
             'mediaList' => $mediaList,

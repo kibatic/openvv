@@ -25,6 +25,7 @@ Encore
     .addEntry('media', './assets/media.js')
     .addEntry('view', './assets/view.js')
     .addEntry('gallery', './assets/gallery.js')
+    .addEntry('linkEdit', './assets/linkEdit.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

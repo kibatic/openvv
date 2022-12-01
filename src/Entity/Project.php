@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\ProjectRendererEnum;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,10 +33,18 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $shareStartedAt = null;
 
+    /**
+     * The renderer indicates how we will display the project : It can
+     * be a single panorama, a gallery of panoramas or a virtual visit
+     */
+    #[ORM\Column(length: 50, nullable: true, enumType: ProjectRendererEnum::class)]
+    private ?ProjectRendererEnum $renderer;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->setShareDurationInDays(30);
+        $this->setRenderer(ProjectRendererEnum::SIMPLE_PANORAMA);
     }
 
     public function getShareEndedAt(): ?\DateTimeImmutable
@@ -137,6 +146,18 @@ class Project
     public function setShareStartedAt(?\DateTimeImmutable $shareStartedAt): self
     {
         $this->shareStartedAt = $shareStartedAt;
+
+        return $this;
+    }
+
+    public function getRenderer(): ?ProjectRendererEnum
+    {
+        return $this->renderer;
+    }
+
+    public function setRenderer(?ProjectRendererEnum $renderer): self
+    {
+        $this->renderer = $renderer;
 
         return $this;
     }
