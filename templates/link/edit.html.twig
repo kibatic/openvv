@@ -44,8 +44,8 @@
                 id="targetViewer"
                 style="width: 100%; height: 100%;"
                 data-panorama="{{ path('app_media_download', {id: link.targetMedia.id}) }}"
-                data-latitude="{{ link.targetLatitude }}"
-                data-longitude="{{ link.targetLongitude }}"
+                data-latitude="{{ link.targetLatitude ?? 0 }}"
+                data-longitude="{{ link.targetLongitude ?? 0 }}"
             ></div>
         </div>
     </div>
