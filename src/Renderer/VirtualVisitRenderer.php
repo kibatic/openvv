@@ -51,8 +51,6 @@ class VirtualVisitRenderer
             ->where('l.sourceMedia = :media')
             ->andWhere('l.sourceLongitude IS NOT NULL')
             ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.sourceTextureX IS NOT NULL')
-            ->andWhere('l.sourceTextureY IS NOT NULL')
             ->andWhere('l.targetLatitude IS NOT NULL')
             ->andWhere('l.targetLongitude IS NOT NULL')
             ->setParameter('media', $media)
@@ -68,8 +66,8 @@ class VirtualVisitRenderer
         foreach ($links as $link) {
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
-                'x' => $link->getSourceTextureX(),
-                'y' => $link->getSourceTextureY()
+                'latitude' => $link->getSourceLatitude(),
+                'longitude' => $link->getSourceLongitude()
             ];
         }
         return $projectLinks;
@@ -81,8 +79,6 @@ class VirtualVisitRenderer
             ->where('m.project = :project')
             ->andWhere('l.sourceLongitude IS NOT NULL')
             ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.sourceTextureX IS NOT NULL')
-            ->andWhere('l.sourceTextureY IS NOT NULL')
             ->andWhere('l.targetLatitude IS NOT NULL')
             ->andWhere('l.targetLongitude IS NOT NULL')
             ->join('l.sourceMedia', 'm')
@@ -93,8 +89,6 @@ class VirtualVisitRenderer
             ->where('m.project = :project')
             ->andWhere('l.sourceLongitude IS NOT NULL')
             ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.sourceTextureX IS NOT NULL')
-            ->andWhere('l.sourceTextureY IS NOT NULL')
             ->andWhere('l.targetLatitude IS NOT NULL')
             ->andWhere('l.targetLongitude IS NOT NULL')
             ->join('l.targetMedia', 'm')

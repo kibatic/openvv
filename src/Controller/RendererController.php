@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Enum\ProjectRendererEnum;
 use App\Renderer\GalleryRenderer;
+use App\Renderer\SimplePanoramaRenderer;
 use App\Renderer\VirtualVisitRenderer;
 use App\Repository\MediaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +21,7 @@ class RendererController extends AbstractController
         MediaRepository $mediaRepository,
         GalleryRenderer $galleryRenderer,
         VirtualVisitRenderer $virtualVisitRenderer,
+        SimplePanoramaRenderer $simplePanoramaRenderer,
         Request $request
     ): Response {
         switch ($project->getRenderer()) {
@@ -35,6 +37,12 @@ class RendererController extends AbstractController
                     'nodes' => $nodes,
                     'rotations' => $virtualVisitRenderer->getRotations($project),
                     'project' => $project,
+                ]);
+            case ProjectRendererEnum::SIMPLE_PANORAMA:
+                return $this->render('renderer/simple-panorama.html.twig', [
+                    'project' => $project,
+                    'initialPosition' => $simplePanoramaRenderer->getInitialPosition($project),
+                    'panorama' => $simplePanoramaRenderer->getPanorama($project),
                 ]);
             default:
                 throw new \Exception('Renderer not found');

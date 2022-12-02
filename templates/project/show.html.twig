@@ -22,7 +22,11 @@
             <tr>
                 <th>Sharing URL</th>
                 <td>
+                    {% if project.isShareActive %}
                     <a href="{{ url('app_renderer_view', {shareUid: project.shareUid}) }}">{{ url('app_renderer_view', {shareUid: project.shareUid}) }}</a><br/>
+                    {% else %}
+                        Not shared <a href="{{ path('app_share_new', {id: project.id}) }}" class="btn btn-primary">Share</a>
+                    {% endif %}
                 </td>
             </tr>
             <tr>

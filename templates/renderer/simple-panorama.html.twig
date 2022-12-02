@@ -1,0 +1,21 @@
+{% extends 'share-base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('renderer/simple-panorama') }}
+{% endblock %}
+
+{% block title %}Project: {{ project.name }}{% endblock %}
+
+{% block body %}
+    <div
+            id="viewer"
+            style="width: 100vw;height: 100vh;"
+            data-caption="{{ project.name }}"
+            data-panorama="{{ panorama }}"
+            data-initial-position="{{ initialPosition|json_encode|escape('html_attr') }}"
+    >
+
+    </div>
+
+{% endblock %}
