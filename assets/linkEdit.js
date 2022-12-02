@@ -21,29 +21,18 @@ const sourceViewer = new Viewer({
         }],
     ]
 });
+sourceViewer.rotate({longitude:sourceContainer.dataset.longitude, latitude:sourceContainer.dataset.latitude});
+
 const targetViewer = new Viewer({
     container: targetContainer,
     panorama: targetContainer.dataset.panorama,
-    plugins: [
-        [MarkersPlugin, {
-            markers: [
-                {
-                    id: 'old-marker',
-                    circle: 20,
-                    longitude: targetContainer.dataset.longitude,
-                    latitude: targetContainer.dataset.latitude,
-                    tooltip: 'Target image orientation'
-                }
-            ],
-        }],
-    ]
 });
+targetViewer.rotate({longitude:targetContainer.dataset.longitude, latitude:targetContainer.dataset.latitude});
+
 
 const sourceMarkersPlugin = sourceViewer.getPlugin(MarkersPlugin);
 
 sourceViewer.on('click', (e, data) => {
-    console.log(`${data.rightclick?'right ':''}clicked at longitude: ${data.longitude} latitude: ${data.latitude}`);
-    console.log(data);
     sourceMarkersPlugin.clearMarkers();
     sourceMarkersPlugin.addMarker({
         id: 'new-marker',
@@ -56,27 +45,9 @@ sourceViewer.on('click', (e, data) => {
     });
     document.querySelector('#edit_link_sourceLongitude').value = data.longitude;
     document.querySelector('#edit_link_sourceLatitude').value = data.latitude;
-    document.querySelector('#edit_link_sourceTextureX').value = data.textureX;
-    document.querySelector('#edit_link_sourceTextureY').value = data.textureY;
 });
 
-const targetMarkersPlugin = targetViewer.getPlugin(MarkersPlugin);
-
-targetViewer.on('click', (e, data) => {
-    console.log(`${data.rightclick?'right ':''}clicked at longitude: ${data.longitude} latitude: ${data.latitude}`);
-    console.log(data);
-    targetMarkersPlugin.clearMarkers();
-    targetMarkersPlugin.addMarker({
-        id: 'new-marker',
-        circle: 20,
-        // x: data.textureX,
-        // y: data.textureY,
-        longitude: data.longitude,
-        latitude: data.latitude,
-        tooltip: 'Target image orientation'
-    });
-    document.querySelector('#edit_link_targetLongitude').value = data.longitude;
-    document.querySelector('#edit_link_targetLatitude').value = data.latitude;
+targetViewer.on('position-updated', (e, position) => {
+    document.querySelector('#edit_link_targetLongitude').value = position.longitude;
+    document.querySelector('#edit_link_targetLatitude').value = position.latitude;
 });
-
-

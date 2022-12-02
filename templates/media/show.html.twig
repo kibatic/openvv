@@ -11,7 +11,12 @@
     <a href="{{ path('app_project_show', { id: media.project.id }) }}" class="link link-info">&lt; Retour au projet {{ media.project.name }}</a>
     <h1>{{ media.name }}</h1>
 
-    <div id="viewer" style="width: 100%; height: 80vh;" data-panorama="{{ path('app_media_download', {id: media.id}) }}"></div>
+    <div
+        id="viewer"
+        style="width: 100%; height: 80vh;"
+        data-panorama="{{ path('app_media_download', {id: media.id}) }}"
+        data-initial-position="{{ media.initialPosition|json_encode|escape('html_attr') }}"
+    ></div>
 
 
     <form method="post" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
@@ -33,8 +38,13 @@
                 {% endif %}
                 <small>From: </small>{{ link.sourceMedia.name }}<br/>
                 <small>To: </small>{{ link.targetMedia.name }}<br/>
-                <a href="{{ path('app_link_edit', {id: link.id}) }}" class="card-link">Edit link</a>
-                <a href="#" class="card-link">Delete link</a>
+
+                <a href="{{ path('app_link_edit', {id: link.id}) }}" class="btn btn-primary btn-sm">Edit link</a>
+
+                <form style="display: inline" method="post" action="{{ path('app_link_delete', {'id': link.id}) }}" onsubmit="return confirm('Are you sure you want to delete the link from {{ link.sourceMedia.name }} to {{ link.targetMedia.name }} ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ link.id) }}">
+                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                </form>
             </div>
         </div>
     {% endfor %}

@@ -22,12 +22,6 @@ class Link
     private ?Media $targetMedia = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $sourceTextureX = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sourceTextureY = null;
-
-    #[ORM\Column(nullable: true)]
     private ?float $sourceLatitude = null;
 
     #[ORM\Column(nullable: true)]

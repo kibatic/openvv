@@ -47,6 +47,15 @@ class Media
     #[ORM\OneToMany(mappedBy: 'targetMedia', targetEntity: Link::class, orphanRemoval: true)]
     private Collection $toMeLinks;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $orderInProject = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $initialLatitude = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $initialLongitude = null;
+
     // create constructor
     public function __construct()
     {
@@ -67,6 +76,19 @@ class Media
     public function vichDirectoryName(): string
     {
         return $this->getProject()->getOwner()->getId().'/'.$this->getProject()->getId();
+    }
+
+    public function getNodeId(): string
+    {
+        return 'pano-'.$this->getId();
+    }
+
+    public function getInitialPosition(): array
+    {
+        return [
+            'latitude' => $this->getInitialLatitude() ?? 0,
+            'longitude' => $this->getInitialLongitude() ?? 0,
+        ];
     }
 
     public function getId(): ?int
@@ -223,6 +245,42 @@ class Media
                 $toMeLink->setTargetMedia(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrderInProject(): ?int
+    {
+        return $this->orderInProject;
+    }
+
+    public function setOrderInProject(?int $orderInProject): self
+    {
+        $this->orderInProject = $orderInProject;
+
+        return $this;
+    }
+
+    public function getInitialLatitude(): ?float
+    {
+        return $this->initialLatitude;
+    }
+
+    public function setInitialLatitude(?float $initialLatitude): self
+    {
+        $this->initialLatitude = $initialLatitude;
+
+        return $this;
+    }
+
+    public function getInitialLongitude(): ?float
+    {
+        return $this->initialLongitude;
+    }
+
+    public function setInitialLongitude(?float $initialLongitude): self
+    {
+        $this->initialLongitude = $initialLongitude;
 
         return $this;
     }

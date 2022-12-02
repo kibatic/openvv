@@ -7,6 +7,7 @@ use App\Entity\Media;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\LinkType;
+use App\Form\MediaEditType;
 use App\Form\MediaType;
 use App\Repository\LinkRepository;
 use App\Repository\MediaRepository;
@@ -74,13 +75,13 @@ class MediaController extends AbstractController
         // create a form for a new Link
         $link = new Link();
         $link->setSourceMedia($media);
-        $form = $this->createForm(LinkType::class, $link);
+        $form = $this->createForm(LinkType::class, $link, ['project' => $media->getProject()]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($link);
             $entityManager->flush();
-            return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
+            return $this->redirectToRoute('app_link_edit', ['id' => $link->getId()]);
         }
 
         $qb = $linkRepository->createQueryBuilder('l')
@@ -110,7 +111,7 @@ class MediaController extends AbstractController
             throw $this->createAccessDeniedException('You are not allowed to access this page.');
         }
 
-        $form = $this->createForm(MediaType::class, $media);
+        $form = $this->createForm(MediaEditType::class, $media);
 
         $form->handleRequest($request);
 

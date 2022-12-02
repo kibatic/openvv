@@ -1,0 +1,21 @@
+{% extends 'share-base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('renderer/virtual-visit') }}
+{% endblock %}
+
+{% block title %}Project: {{ project.name }}{% endblock %}
+
+{% block body %}
+    <div
+            id="viewer"
+            style="width: 100vw;height: 100vh;"
+            data-nodes="{{ nodes|json_encode|escape('html_attr') }}"
+            data-rotations="{{ rotations|json_encode|escape('html_attr') }}"
+            data-caption="{{ project.name }}"
+            data-panorama="{{ nodes.0.panorama }}"
+    >
+    </div>
+
+{% endblock %}

@@ -1,4 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-aside.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('mediaEdit') }}
+{% endblock %}
 
 {% block title %}Edit the media {{ media.name }}{% endblock %}
 
@@ -7,4 +12,16 @@
     {{ form_widget(form) }}
     <button class="btn btn-primary">Update media</button>
     {{ form_end(form) }}
+{% endblock %}
+
+{% block aside %}
+    <h1>Edit the media {{ media.name }}</h1>
+
+    <div
+        id="viewer"
+        style="width: 100%; height: 30vh;"
+        data-panorama="{{ path('app_media_download', {id: media.id}) }}"
+        data-initial-position="{{ media.initialPosition|json_encode|escape('html_attr') }}"
+    ></div>
+
 {% endblock %}

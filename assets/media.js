@@ -17,6 +17,7 @@ const viewer = new Viewer({
     ]
 });
 const markersPlugin = viewer.getPlugin(MarkersPlugin);
+viewer.rotate(JSON.parse(container.dataset.initialPosition));
 
 viewer.on('click', (e, data) => {
     console.log(`${data.rightclick?'right ':''}clicked at longitude: ${data.longitude} latitude: ${data.latitude}`);
@@ -33,7 +34,5 @@ viewer.on('click', (e, data) => {
     });
     document.querySelector('#link_sourceLongitude').value = data.longitude;
     document.querySelector('#link_sourceLatitude').value = data.latitude;
-    document.querySelector('#link_sourceTextureX').value = data.textureX;
-    document.querySelector('#link_sourceTextureY').value = data.textureY;
 });
 

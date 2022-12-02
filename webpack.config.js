@@ -21,10 +21,10 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('basic', './assets/basic.js')
     .addEntry('media', './assets/media.js')
-    .addEntry('view', './assets/view.js')
-    .addEntry('gallery', './assets/gallery.js')
+    .addEntry('mediaEdit', './assets/mediaEdit.js')
+    .addEntry('renderer/gallery', './assets/renderer/gallery.js')
+    .addEntry('renderer/virtual-visit', './assets/renderer/virtual-visit.js')
     .addEntry('linkEdit', './assets/linkEdit.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Link;
 use App\Form\EditLinkType;
+use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,5 +34,29 @@ class LinkController extends AbstractController
             'link' => $link,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/link/{id}/delete', name: 'app_link_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Link $link,
+        LinkRepository $mediaRepository
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        $user = $this->getUser();
+
+        // deny access if the user is not the owner of the project
+        if ($link->getSourceMedia()->getProject()->getOwner() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$link->getId(), $request->request->get('_token'))) {
+            $mediaRepository->remove($link, true);
+        }
+
+        return $this->redirectToRoute('app_media_show', ['id' => $link->getSourceMedia()->getId()], Response::HTTP_SEE_OTHER);
     }
 }
