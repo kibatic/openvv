@@ -13,6 +13,3 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
       - "./ddata/database:/var/lib/postgresql/data:rw"
-  mailer:
-    image: schickling/mailcatcher
-    ports: [1025, 1080]
