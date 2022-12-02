@@ -8,7 +8,9 @@ permissions-dev: ## [host] Configure les permissions de dev
 	sudo setfacl -R  -m u:$(USER):rwX ./
 	sudo setfacl -dR -m u:$(USER):rwX ./
 
-install: ## [host] Installe les dépendances
-	docker compose exec web composer install
-	docker compose exec web yarn install
-	docker compose exec web yarn encore prod
+install_prod: ## [host] Installe les dépendances
+	docker-compose exec web composer install
+	docker-compose exec web yarn install
+	docker-compose exec web yarn encore prod
+	docker-compose exec web php bin/console doctrine:migrations:migrate --no-interaction
+	sudo chown -R www-data:www-data ./var
