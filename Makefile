@@ -7,3 +7,8 @@ bash: ## [host] Ouvre un bash dans le conteneur web (en tant que root)
 permissions-dev: ## [host] Configure les permissions de dev
 	sudo setfacl -R  -m u:$(USER):rwX ./
 	sudo setfacl -dR -m u:$(USER):rwX ./
+
+install: ## [host] Installe les dépendances
+	docker compose exec web composer install
+	docker compose exec web yarn install
+	docker compose exec web yarn encore prod
