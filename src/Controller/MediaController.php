@@ -46,14 +46,13 @@ class MediaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($media);
             $entityManager->flush();
-            // add flash message
             $this->addFlash('success', 'Media created successfully.');
-            // redirect to the project show page
             return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
         }
 
         return $this->render('media/new.html.twig', [
             'form' => $form->createView(),
+            'project' => $project,
         ]);
     }
 
@@ -81,6 +80,7 @@ class MediaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($link);
             $entityManager->flush();
+            $this->addFlash('success', 'Link created successfully.');
             return $this->redirectToRoute('app_link_edit', ['id' => $link->getId()]);
         }
 

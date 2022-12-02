@@ -45,7 +45,14 @@
                 </div>
             </nav>
             <div class="row">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+                        {% block breadcrumb %}{% endblock %}
+                    </ol>
+                </nav>
                 <div class="col" style="position:relative;">
+                    {% include "_flash.html.twig" %}
                     {% block body %}{% endblock %}
                 </div>
             </div>

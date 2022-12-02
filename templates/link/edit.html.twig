@@ -7,25 +7,48 @@
 
 {% block title %}Lien{% endblock %}
 
-{% block body %}
-    <a href="{{ path('app_project_show', { id: link.sourceMedia.project.id }) }}" class="link link-info">&lt; Retour au projet {{ link.sourceMedia.project.name }}</a>
-    <a href="{{ path('app_media_show', { id: link.sourceMedia.id }) }}" class="link link-info">&lt; Retour au média {{ link.sourceMedia.name }}</a>
-    <h1>Edit of a link</h1>
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_project_show', {id: link.sourceMedia.project.id}) }}">Projet</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_media_show', {id: link.sourceMedia.id}) }}">Media</a>
+    </li>
+{% endblock %}
 
-    <div
-        id="sourceViewer"
-        style="width: 100%; height: 40vh;"
-        data-panorama="{{ path('app_media_download', {id: link.sourceMedia.id}) }}"
-        data-latitude="{{ link.sourceLatitude }}"
-        data-longitude="{{ link.sourceLongitude }}"
-    ></div>
-    <div
-        id="targetViewer"
-        style="width: 100%; height: 40vh;"
-        data-panorama="{{ path('app_media_download', {id: link.targetMedia.id}) }}"
-        data-latitude="{{ link.targetLatitude }}"
-        data-longitude="{{ link.targetLongitude }}"
-    ></div>
+
+{% block body %}
+    <h1><span class="title-text-light">Edit link of the media</span> {{ link.sourceMedia.name }}</h1>
+
+    <div class="card" style="width: 100%; height: 40vh;">
+        <div class="card-header">
+            Source Media : click on the panorama to set the link position of the source media
+        </div>
+        <div class="card-body">
+            <div
+                    id="sourceViewer"
+                    style="width: 100%; height: 100%;"
+                    data-panorama="{{ path('app_media_download', {id: link.sourceMedia.id}) }}"
+                    data-latitude="{{ link.sourceLatitude }}"
+                    data-longitude="{{ link.sourceLongitude }}"
+            ></div>
+        </div>
+    </div>
+    <br/>
+    <div class="card" style="width: 100%; height: 40vh;">
+        <div class="card-header">
+            Target Media : move the panorama to set the eyes direction on the target media
+        </div>
+        <div class="card-body">
+            <div
+                id="targetViewer"
+                style="width: 100%; height: 100%;"
+                data-panorama="{{ path('app_media_download', {id: link.targetMedia.id}) }}"
+                data-latitude="{{ link.targetLatitude }}"
+                data-longitude="{{ link.targetLongitude }}"
+            ></div>
+        </div>
+    </div>
 
 {% endblock %}
 

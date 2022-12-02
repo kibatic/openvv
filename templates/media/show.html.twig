@@ -5,21 +5,29 @@
     {{ encore_entry_script_tags('media') }}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_project_show', {id: media.project.id}) }}">Projet</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_media_show', {id: media.id}) }}">Media</a>
+    </li>
+{% endblock %}
+
 {% block title %}Media{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_project_show', { id: media.project.id }) }}" class="link link-info">&lt; Retour au projet {{ media.project.name }}</a>
-    <h1>{{ media.name }}</h1>
+    <h1><span class="title-text-light">Media</span> {{ media.name }}</h1>
 
     <div
         id="viewer"
-        style="width: 100%; height: 80vh;"
+        style="width: 100%; height: 70vh;"
         data-panorama="{{ path('app_media_download', {id: media.id}) }}"
         data-initial-position="{{ media.initialPosition|json_encode|escape('html_attr') }}"
     ></div>
 
-
-    <form method="post" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
+    <a href="{{ path('app_media_edit', {id: media.id}) }}" class="btn btn-primary">Edit</a>
+    <form method="post"  style="display:inline" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ media.id) }}">
         <button class="btn btn-outline-danger">Delete</button>
     </form>

@@ -1,19 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-aside.html.twig' %}
 
-{% block title %}Project{% endblock %}
+{% block body_size %}col-6{% endblock %}
+
+{% block title %}{{ project.name }} : projet openvv{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_project_show', {id: project.id}) }}">Projet</a>
+    </li>
+{% endblock %}
 
 {% block body %}
-    <h1>Project : {{ project.name }}</h1>
+    <h1><span class="title-text-light">Projet</span> {{ project.name }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ project.id }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Rendering</th>
+                <td>{{ project.renderer.name }}</td>
             </tr>
             <tr>
                 <th>Sharing URL</th>
@@ -21,17 +25,20 @@
                     <a href="{{ url('app_renderer_view', {shareUid: project.shareUid}) }}">{{ url('app_renderer_view', {shareUid: project.shareUid}) }}</a><br/>
                 </td>
             </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
         </tbody>
     </table>
 
+    <a href="{{ path('app_project_edit', {id: project.id}) }}" class="btn btn-primary">edit</a>
+    {{ include('project/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block aside %}
     <h2>Médias</h2>
     <a href="{{ path('app_media_new', {'project': project.id}) }}" class="btn btn-primary">Ajouter un média</a>
 
     {% include grid.theme ~ '/datagrid.html.twig' %}
-
-    <a href="{{ path('app_project_index') }}">back to list</a>
-
-    <a href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>
-
-    {{ include('project/_delete_form.html.twig') }}
 {% endblock %}

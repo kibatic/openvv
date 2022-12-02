@@ -27,6 +27,7 @@ class LinkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($link);
             $entityManager->flush();
+            $this->addFlash('success', 'Link updated successfully.');
             return $this->redirectToRoute('app_media_show', ['id' => $link->getSourceMedia()->getId()]);
         }
 
@@ -55,6 +56,7 @@ class LinkController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$link->getId(), $request->request->get('_token'))) {
             $mediaRepository->remove($link, true);
+            $this->addFlash('success', 'Link removed.');
         }
 
         return $this->redirectToRoute('app_media_show', ['id' => $link->getSourceMedia()->getId()], Response::HTTP_SEE_OTHER);

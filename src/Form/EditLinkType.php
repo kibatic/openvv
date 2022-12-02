@@ -12,8 +12,6 @@ class EditLinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sourceTextureX')
-            ->add('sourceTextureY')
             ->add('sourceLatitude')
             ->add('sourceLongitude')
             ->add('targetLatitude')

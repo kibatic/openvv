@@ -2,6 +2,12 @@
 
 {% block title %}Add a new Media{% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_project_show', {id: project.id}) }}">Projet</a>
+    </li>
+{% endblock %}
+
 {% block body %}
     {{ form_start(form) }}
     {{ form_widget(form) }}

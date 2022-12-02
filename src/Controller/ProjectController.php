@@ -103,7 +103,7 @@ class ProjectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectRepository->save($project, true);
-
+            $this->addFlash('success', 'Project created successfully.');
             return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -187,8 +187,8 @@ class ProjectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectRepository->save($project, true);
-
-            return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Project updated successfully.');
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('project/edit.html.twig', [
