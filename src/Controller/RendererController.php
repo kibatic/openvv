@@ -35,7 +35,8 @@ class RendererController extends AbstractController
                 $nodes = $virtualVisitRenderer->getNodes($project);
                 return $this->render('renderer/virtual-visit.html.twig', [
                     'nodes' => $nodes,
-                    'rotations' => $virtualVisitRenderer->getRotations($project),
+                    'linkRotations' => $virtualVisitRenderer->getLinkRotations($project),
+                    'mediaRotations' => $virtualVisitRenderer->getMediaRotations($project),
                     'project' => $project,
                 ]);
             case ProjectRendererEnum::SIMPLE_PANORAMA:

@@ -25,16 +25,14 @@ const viewer = new Viewer({
 const virtualTour = viewer.getPlugin(VirtualTourPlugin);
 const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
-console.log(JSON.parse(container.dataset.nodes));
 virtualTour.setNodes(JSON.parse(container.dataset.nodes));
-const rotations = JSON.parse(container.dataset.rotations);
+const linkRotations = JSON.parse(container.dataset.linkRotations);
+const mediaRotations = JSON.parse(container.dataset.mediaRotations);
 
 virtualTour.on('node-changed', (e, nodeId, data) => {
-    console.log(`Current node is ${nodeId}`);
-    console.log(data);
     if (data.fromNode) { // other data are available
-        console.log(`Previous node was ${data.fromNode.id}`);
-        console.log('rotation to : '+rotations[data.fromNode.id][nodeId])
-        viewer.rotate(rotations[data.fromNode.id][nodeId]);
+        viewer.rotate(linkRotations[data.fromNode.id][nodeId]);
+    } else {
+        viewer.rotate(mediaRotations[nodeId]);
     }
 });

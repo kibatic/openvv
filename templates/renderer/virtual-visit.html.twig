@@ -12,7 +12,8 @@
             id="viewer"
             style="width: 100vw;height: 100vh;"
             data-nodes="{{ nodes|json_encode|escape('html_attr') }}"
-            data-rotations="{{ rotations|json_encode|escape('html_attr') }}"
+            data-link-rotations="{{ linkRotations|json_encode|escape('html_attr') }}"
+            data-media-rotations="{{ mediaRotations|json_encode|escape('html_attr') }}"
             data-caption="{{ project.name }}"
             data-panorama="{{ nodes.0.panorama }}"
     >

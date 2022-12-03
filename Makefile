@@ -13,4 +13,5 @@ install_prod: ## [host] Installe les dépendances
 	docker-compose exec web yarn install
 	docker-compose exec web yarn encore prod
 	docker-compose exec web php bin/console doctrine:migrations:migrate --no-interaction
+	docker-compose exec web supervisorctl restart php-fpm
 	sudo chown -R www-data:www-data ./var

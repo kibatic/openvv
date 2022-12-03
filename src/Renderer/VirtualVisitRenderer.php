@@ -73,7 +73,27 @@ class VirtualVisitRenderer
         return $projectLinks;
     }
 
-    public function getRotations(Project $project): array
+    public function getMediaRotations(Project $project): array
+    {
+        /** @var Media[] $mediaList */
+        $mediaList = $this->mediaRepository->createQueryBuilder('m')
+            ->where('m.project = :project')
+            ->setParameter('project', $project)
+            ->orderBy('m.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+        $rotations = [];
+        foreach ($mediaList as $media) {
+            $rotations[$media->getNodeId()] = [
+                'longitude' => $media->getInitialLongitude(),
+                'latitude' => $media->getInitialLatitude(),
+            ];
+        }
+        return $rotations;
+    }
+
+    public function getLinkRotations(Project $project): array
     {
         $linksBySource = $this->linkRepository->createQueryBuilder('l')
             ->where('m.project = :project')
