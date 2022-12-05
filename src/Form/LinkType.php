@@ -27,8 +27,6 @@ class LinkType extends AbstractType
                     ;
                 },
             ])
-            ->add('sourceLatitude')
-            ->add('sourceLongitude')
         ;
     }
 

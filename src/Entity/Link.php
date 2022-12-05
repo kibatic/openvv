@@ -104,7 +104,7 @@ class Link
 
     public function getSourceLatitude(): ?float
     {
-        return $this->sourceLatitude;
+        return $this->sourceLatitude ?? 0;
     }
 
     public function setSourceLatitude(?float $sourceLatitude): self
@@ -116,7 +116,7 @@ class Link
 
     public function getSourceLongitude(): ?float
     {
-        return $this->sourceLongitude;
+        return $this->sourceLongitude ?? 0;
     }
 
     public function setSourceLongitude(?float $sourceLongitude): self
@@ -128,7 +128,7 @@ class Link
 
     public function getTargetLatitude(): ?float
     {
-        return $this->targetLatitude;
+        return $this->targetLatitude ?? 0;
     }
 
     public function setTargetLatitude(?float $targetLatitude): self
@@ -140,7 +140,7 @@ class Link
 
     public function getTargetLongitude(): ?float
     {
-        return $this->targetLongitude;
+        return $this->targetLongitude ?? 0;
     }
 
     public function setTargetLongitude(?float $targetLongitude): self
