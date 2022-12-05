@@ -157,8 +157,19 @@ class ProjectController extends AbstractController
                 'name'
             )
             ->addColumn(
-                'Order',
-                'orderInProject'
+                'Infos',
+                fn(Media $media) => sprintf(
+                    '
+                    order: %s<br/>
+                    from links : %s<br/>
+                    to links : %s
+                    ',
+                    $media->getOrderInProject(),
+                    count($media->getFromMeLinks()),
+                    count($media->getToMeLinks())
+                ),
+                Template::TEXT,
+                [ 'escape' => false ]
             )
             ->addColumn(
                 'Actions',
