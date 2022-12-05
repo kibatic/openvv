@@ -1,6 +1,18 @@
 //$primary: darken(#FF0000, 20%);
 @import "~bootstrap/scss/bootstrap";
 
+// hack to turn arround vh and vw css units
+html.renderer_viewport, .renderer_viewport body {
+  position: fixed;
+  width: 100%;
+  height: 100%
+}
+// hack to turn arround vh and vw css units
+.renderer_viewport #viewer {
+  width: 100vw;
+  height: 100%
+}
+
 .link-badge {
   position: absolute;
   top: 2px;

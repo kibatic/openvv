@@ -10,6 +10,11 @@ const panorama = container.dataset.panorama;
 const viewer = new Viewer({
     container: container,
     panorama: panorama,
+    navbar: [
+        'autorotate',
+        'caption',
+        'fullscreen',
+    ],
     plugins: [
         [VirtualTourPlugin, {
             positionMode: VirtualTourPlugin.MODE_MANUAL,

@@ -10,7 +10,6 @@
 {% block body %}
     <div
             id="viewer"
-            style="width: 100vw;height: 100vh;"
             data-items="{{ items|json_encode|escape('html_attr') }}"
             data-caption="{{ project.name }}"
             data-panorama="{{ items.0.panorama }}"

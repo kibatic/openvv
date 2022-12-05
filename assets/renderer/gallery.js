@@ -7,7 +7,11 @@ const viewer = new Viewer({
     container: container,
     panorama: container.dataset.panorama,
     caption: container.dataset.caption,
-
+    navbar: [
+        'autorotate',
+        'caption',
+        'fullscreen',
+    ],
     plugins: [
         [GalleryPlugin, {
             visibleOnLoad: true,

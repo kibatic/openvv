@@ -6,5 +6,10 @@ const viewer = new Viewer({
     container: container,
     panorama: container.dataset.panorama,
     caption: container.dataset.caption,
+    navbar: [
+        'autorotate',
+        'caption',
+        'fullscreen',
+    ]
 });
 viewer.rotate(JSON.parse(container.dataset.initialPosition));
