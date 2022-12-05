@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
@@ -21,6 +22,7 @@ class Media
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Gedmo\SortableGroup]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
@@ -47,7 +49,8 @@ class Media
     #[ORM\OneToMany(mappedBy: 'targetMedia', targetEntity: Link::class, orphanRemoval: true)]
     private Collection $toMeLinks;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
+    #[Gedmo\SortablePosition]
     private ?int $orderInProject = null;
 
     #[ORM\Column(nullable: true)]
@@ -62,6 +65,7 @@ class Media
         $this->createdAt = new \DateTimeImmutable();
         $this->fromMeLinks = new ArrayCollection();
         $this->toMeLinks = new ArrayCollection();
+        $this->orderInProject = 0;
     }
 
     public function __toString(): string
@@ -263,7 +267,7 @@ class Media
 
     public function getInitialLatitude(): ?float
     {
-        return $this->initialLatitude;
+        return $this->initialLatitude ?? 0;
     }
 
     public function setInitialLatitude(?float $initialLatitude): self
@@ -275,7 +279,7 @@ class Media
 
     public function getInitialLongitude(): ?float
     {
-        return $this->initialLongitude;
+        return $this->initialLongitude ?? 0;
     }
 
     public function setInitialLongitude(?float $initialLongitude): self

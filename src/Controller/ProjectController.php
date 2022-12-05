@@ -136,7 +136,7 @@ class ProjectController extends AbstractController
         $queryBuilder = $mediaRepository->createQueryBuilder('m')
             ->where('m.project = :project')
             ->setParameter('project', $project)
-            ->orderBy('m.createdAt', 'DESC')
+            ->orderBy('m.orderInProject', 'ASC')
         ;
         $grid = $gridBuilder
             ->create($queryBuilder, $request)
@@ -155,6 +155,10 @@ class ProjectController extends AbstractController
             ->addColumn(
                 'Name',
                 'name'
+            )
+            ->addColumn(
+                'Order',
+                'orderInProject'
             )
             ->addColumn(
                 'Actions',

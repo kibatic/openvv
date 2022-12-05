@@ -22,7 +22,7 @@ class VirtualVisitRenderer
         $mediaList = $this->mediaRepository->createQueryBuilder('m')
             ->where('m.project = :project')
             ->setParameter('project', $project)
-            ->orderBy('m.createdAt', 'DESC')
+            ->orderBy('m.orderInProject', 'ASC')
             ->getQuery()
             ->getResult()
         ;
@@ -79,7 +79,7 @@ class VirtualVisitRenderer
         $mediaList = $this->mediaRepository->createQueryBuilder('m')
             ->where('m.project = :project')
             ->setParameter('project', $project)
-            ->orderBy('m.createdAt', 'DESC')
+            ->orderBy('m.orderInProject', 'ASC')
             ->getQuery()
             ->getResult()
         ;

@@ -24,6 +24,7 @@ class MediaEditType extends AbstractType
             ])
             ->add('initialLongitude')
             ->add('initialLatitude')
+            ->add('orderInProject')
         ;
     }
 

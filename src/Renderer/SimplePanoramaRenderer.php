@@ -15,17 +15,21 @@ class SimplePanoramaRenderer
     ) {
     }
 
-    public function getPanorama(Project $project): string
+    protected function getFirstMedia(Project $project): ?Media
     {
-        /** @var Media $media */
-        $media = $this->mediaRepository->createQueryBuilder('m')
+        return $this->mediaRepository->createQueryBuilder('m')
             ->where('m.project = :project')
             ->setParameter('project', $project)
-            ->orderBy('m.createdAt', 'DESC')
+            ->orderBy('m.orderInProject', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleResult()
         ;
+    }
+
+    public function getPanorama(Project $project): string
+    {
+        $media = $this->getFirstMedia($project);
         return $this->router->generate('app_media_download_public', [
             'shareUid' => $project->getShareUid(),
             'id' => $media->getId()
@@ -33,14 +37,7 @@ class SimplePanoramaRenderer
     }
     public function getInitialPosition(Project $project): array
     {
-        /** @var Media $media */
-        $media = $this->mediaRepository->createQueryBuilder('m')
-            ->where('m.project = :project')
-            ->setParameter('project', $project)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleResult()
-        ;
+        $media = $this->getFirstMedia($project);
         return [
             'longitude' => $media->getInitialLongitude(),
             'latitude' => $media->getInitialLatitude(),
