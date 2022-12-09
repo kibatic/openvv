@@ -9,3 +9,14 @@ flysystem:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/storage/thumbnail'
+when@test:
+    flysystem:
+        storages:
+            media.storage:
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/test/storage/media'
+            thumbnail.storage:
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/test/storage/thumbnail'

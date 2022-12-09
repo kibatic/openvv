@@ -95,6 +95,22 @@ class Media
         ];
     }
 
+    public function arrayExport()
+    {
+        return [
+            'id' => $this->getId(),
+            'projectId' => $this->getProject()->getId(),
+            'name' => $this->getName(),
+            'mediaName' => $this->getMediaName(),
+            'mediaSize' => $this->getMediaSize(),
+            'orderInProject' => $this->getOrderInProject(),
+            'uploadedAt' => $this->getUploadedAt(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'initialLatitude' => $this->getInitialLatitude(),
+            'initialLongitude' => $this->getInitialLongitude(),
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,9 +165,10 @@ class Media
         return $this->mediaFile;
     }
 
-    public function setMediaName(?string $mediaName): void
+    public function setMediaName(?string $mediaName): self
     {
         $this->mediaName = $mediaName;
+        return $this;
     }
 
     public function getMediaName(): ?string
@@ -159,9 +176,10 @@ class Media
         return $this->mediaName;
     }
 
-    public function setMediaSize(?int $mediaSize): void
+    public function setMediaSize(?int $mediaSize): self
     {
         $this->mediaSize = $mediaSize;
+        return $this;
     }
 
     public function getMediaSize(): ?int

@@ -1,6 +1,6 @@
 <?php
 
-namespace Enum;
+namespace Tests\Enum;
 
 use App\Enum\ProjectRendererEnum;
 use PHPUnit\Framework\TestCase;

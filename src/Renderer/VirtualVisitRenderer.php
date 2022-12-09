@@ -19,13 +19,7 @@ class VirtualVisitRenderer
 
     public function getNodes(Project $project): array
     {
-        $mediaList = $this->mediaRepository->createQueryBuilder('m')
-            ->where('m.project = :project')
-            ->setParameter('project', $project)
-            ->orderBy('m.orderInProject', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        $mediaList = $this->mediaRepository->findByProject($project);
         foreach ($mediaList as $media) {
             $nodes[] = [
                 'id' => 'pano-'.$media->getId(),
@@ -75,14 +69,7 @@ class VirtualVisitRenderer
 
     public function getMediaRotations(Project $project): array
     {
-        /** @var Media[] $mediaList */
-        $mediaList = $this->mediaRepository->createQueryBuilder('m')
-            ->where('m.project = :project')
-            ->setParameter('project', $project)
-            ->orderBy('m.orderInProject', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        $mediaList = $this->mediaRepository->findByProject($project);
         $rotations = [];
         foreach ($mediaList as $media) {
             $rotations[$media->getNodeId()] = [
@@ -95,34 +82,7 @@ class VirtualVisitRenderer
 
     public function getLinkRotations(Project $project): array
     {
-        $linksBySource = $this->linkRepository->createQueryBuilder('l')
-            ->where('m.project = :project')
-            ->andWhere('l.sourceLongitude IS NOT NULL')
-            ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.targetLatitude IS NOT NULL')
-            ->andWhere('l.targetLongitude IS NOT NULL')
-            ->join('l.sourceMedia', 'm')
-            ->setParameter('project', $project)
-            ->getQuery()->getResult()
-        ;
-        $linksByTarget = $this->linkRepository->createQueryBuilder('l')
-            ->where('m.project = :project')
-            ->andWhere('l.sourceLongitude IS NOT NULL')
-            ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.targetLatitude IS NOT NULL')
-            ->andWhere('l.targetLongitude IS NOT NULL')
-            ->join('l.targetMedia', 'm')
-            ->setParameter('project', $project)
-            ->getQuery()->getResult()
-        ;
-        // merge linksByTarget and linksBySource and deduplicate
-        $links = [];
-        foreach ($linksBySource as $link) {
-            $links[$link->getId()] = $link;
-        }
-        foreach ($linksByTarget as $link) {
-            $links[$link->getId()] = $link;
-        }
+        $links = $this->linkRepository->findByProject($project);
 
         $rotations = [];
         foreach ($links as $link) {

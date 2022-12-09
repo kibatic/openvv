@@ -15,3 +15,10 @@ install_prod: ## [host] Installe les dépendances
 	docker-compose exec web php bin/console doctrine:migrations:migrate --no-interaction
 	docker-compose exec web supervisorctl restart php-fpm
 	sudo chown -R www-data:www-data ./var
+
+fixtures: ## [host] Charge les fixtures
+	# drop db
+	docker-compose exec web php bin/console doctrine:database:drop --env=test --if-exists --force
+	docker-compose exec web php bin/console doctrine:database:create --env=test
+	docker-compose exec web php bin/console doctrine:migration:migrate --env=test --no-interaction
+	docker-compose exec web php bin/console doctrine:fixtures:load --env=test --no-interaction

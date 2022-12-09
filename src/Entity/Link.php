@@ -49,6 +49,20 @@ class Link
             && $this->getTargetLongitude() !== null;
     }
 
+    public function arrayExport()
+    {
+        return [
+            'id' => $this->getId(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'sourceMediaId' => $this->getSourceMedia()->getId(),
+            'targetMediaId' => $this->getTargetMedia()->getId(),
+            'sourceLatitude' => $this->getSourceLatitude(),
+            'sourceLongitude' => $this->getSourceLongitude(),
+            'targetLatitude' => $this->getTargetLatitude(),
+            'targetLongitude' => $this->getTargetLongitude(),
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;

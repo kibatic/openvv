@@ -16,13 +16,7 @@ class GalleryRenderer
 
     public function getItems(Project $project): array
     {
-        $mediaList = $this->mediaRepository->createQueryBuilder('m')
-            ->where('m.project = :project')
-            ->setParameter('project', $project)
-            ->orderBy('m.orderInProject', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        $mediaList = $this->mediaRepository->findByProject($project);
 
         $items = [];
         foreach ($mediaList as $media) {

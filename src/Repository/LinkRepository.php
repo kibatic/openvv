@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Link;
+use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,20 +40,38 @@ class LinkRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Link[] Returns an array of Link objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByProject(Project $project): array
+    {
+        $linksBySource = $this->createQueryBuilder('l')
+            ->where('m.project = :project')
+            ->andWhere('l.sourceLongitude IS NOT NULL')
+            ->andWhere('l.sourceLatitude IS NOT NULL')
+            ->andWhere('l.targetLatitude IS NOT NULL')
+            ->andWhere('l.targetLongitude IS NOT NULL')
+            ->join('l.sourceMedia', 'm')
+            ->setParameter('project', $project)
+            ->getQuery()->getResult()
+        ;
+        $linksByTarget = $this->createQueryBuilder('l')
+            ->where('m.project = :project')
+            ->andWhere('l.sourceLongitude IS NOT NULL')
+            ->andWhere('l.sourceLatitude IS NOT NULL')
+            ->andWhere('l.targetLatitude IS NOT NULL')
+            ->andWhere('l.targetLongitude IS NOT NULL')
+            ->join('l.targetMedia', 'm')
+            ->setParameter('project', $project)
+            ->getQuery()->getResult()
+        ;
+        // merge linksByTarget and linksBySource and deduplicate
+        $links = [];
+        foreach ($linksBySource as $link) {
+            $links[$link->getId()] = $link;
+        }
+        foreach ($linksByTarget as $link) {
+            $links[$link->getId()] = $link;
+        }
+        return array_values($links);
+    }
 
 //    public function findOneBySomeField($value): ?Link
 //    {

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Media;
+use App\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
@@ -33,20 +34,19 @@ class MediaRepository extends SortableRepository
         }
     }
 
-//    /**
-//     * @return Media[] Returns an array of Media objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Media[] Returns an array of Media objects
+     */
+    public function findByProject(Project $project): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.project = :project')
+            ->setParameter('project', $project)
+            ->orderBy('m.orderInProject', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Media
 //    {

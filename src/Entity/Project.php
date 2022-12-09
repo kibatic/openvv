@@ -73,6 +73,16 @@ class Project
         return $diff->days;
     }
 
+    public function arrayExport() {
+        return [
+            'id' => $this->getId(),
+            'ownerEmail' => $this->getOwner()->getEmail(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'name' => $this->getName(),
+            'renderer' => $this->getRenderer() ? $this->getRenderer()->value : null,
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
