@@ -63,6 +63,14 @@ class Link
         ];
     }
 
+    public function arrayImport(array $data)
+    {
+        $this->setSourceLatitude($data['sourceLatitude']);
+        $this->setSourceLongitude($data['sourceLongitude']);
+        $this->setTargetLatitude($data['targetLatitude']);
+        $this->setTargetLongitude($data['targetLongitude']);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

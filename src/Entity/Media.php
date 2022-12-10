@@ -111,6 +111,17 @@ class Media
         ];
     }
 
+    public function arrayImport(array $data): void
+    {
+        $this->setName($data['name']);
+        $this->setMediaName($data['mediaName']);
+        $this->setMediaSize($data['mediaSize']);
+        $this->setOrderInProject($data['orderInProject']);
+        $this->setUploadedAt(new \DateTimeImmutable($data['uploadedAt']));
+        $this->setInitialLatitude($data['initialLatitude']);
+        $this->setInitialLongitude($data['initialLongitude']);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

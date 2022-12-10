@@ -5,6 +5,7 @@ namespace Tests\ExportImport;
 use App\ExportImport\Exporter;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ExporterTest extends KernelTestCase
 {
@@ -46,5 +47,8 @@ class ExporterTest extends KernelTestCase
         $this->assertSame('media-test_1.jpg', file_get_contents($destDir . '/media/1/1/test_1.jpg'));
         $this->assertSame('thumbnail-test_2.jpg', file_get_contents($destDir . '/thumbnail/1/1/test_2.jpg'));
         $this->assertEquals($exporter->exportData($project), json_decode(file_get_contents($destDir . '/data.json'), true));
+
+        $filesystem = new Filesystem();
+        $filesystem->remove($destDir);
     }
 }

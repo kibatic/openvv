@@ -21,19 +21,28 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-        $owner = new User();
-        $owner
-            ->setEmail('toto@example.com')
+        $alice = new User();
+        $alice
+            ->setEmail('alice@example.com')
             // this is the hash for "testpass"
             ->setPassword('$2y$13$hYZbAxA7.ySISMjHFKey..ANu44yDe1Ce1rQ1D86k8tPFdKywYAKC')
             ->setIsVerified(true)
         ;
-        $manager->persist($owner);
+        $manager->persist($alice);
+
+        $bob = new User();
+        $bob
+            ->setEmail('bob@example.com')
+            // this is the hash for "testpass"
+            ->setPassword('$2y$13$hYZbAxA7.ySISMjHFKey..ANu44yDe1Ce1rQ1D86k8tPFdKywYAKC')
+            ->setIsVerified(true)
+        ;
+        $manager->persist($bob);
 
         $project = new Project();
         $project
             ->setName('ExportedProject')
-            ->setOwner($owner)
+            ->setOwner($alice)
             ->setShareUid('test-project')
             ->setRenderer(ProjectRendererEnum::GALLERY)
             ->setShareDurationInDays(10)
@@ -83,6 +92,7 @@ class AppFixtures extends Fixture
         $manager->persist($this->createOneLink(1,0, $mediaList));
         $manager->persist($this->createOneLink(0,2, $mediaList));
         $manager->persist($this->createOneLink(2,0, $mediaList));
+
         $manager->persist($this->createOneLink(0,3, $mediaList));
         $manager->persist($this->createOneLink(3,0, $mediaList));
         $manager->persist($this->createOneLink(1,3, $mediaList));

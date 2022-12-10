@@ -77,10 +77,16 @@ class Project
         return [
             'id' => $this->getId(),
             'ownerEmail' => $this->getOwner()->getEmail(),
+            'ownerId' => $this->getOwner()->getId(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'name' => $this->getName(),
             'renderer' => $this->getRenderer() ? $this->getRenderer()->value : null,
         ];
+    }
+    public function arrayImport(array $data) {
+        $this->setName($data['name']);
+        $this->setRenderer(ProjectRendererEnum::getEnumCaseByValue($data['renderer']));
+        return $this;
     }
 
     public function getId(): ?int
