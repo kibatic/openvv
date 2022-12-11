@@ -8,30 +8,25 @@ use App\Repository\LinkRepository;
 use App\Repository\MediaRepository;
 use Symfony\Component\Routing\RouterInterface;
 
-class VirtualVisitRenderer
+class VirtualVisitRenderer extends AbstractRenderer
 {
     public function __construct(
         private readonly MediaRepository $mediaRepository,
         private readonly LinkRepository $linkRepository,
         private readonly RouterInterface $router,
     ) {
+        parent::__construct($router);
     }
 
-    public function getNodes(Project $project): array
+    public function getNodes(Project $project, bool $isPublic = true): array
     {
         $mediaList = $this->mediaRepository->findByProject($project);
         foreach ($mediaList as $media) {
             $nodes[] = [
                 'id' => 'pano-'.$media->getId(),
                 'name' => $media->getName(),
-                'panorama' => $this->router->generate('app_media_download_public', [
-                    'shareUid' => $project->getShareUid(),
-                    'id' => $media->getId()
-                ]),
-                'thumbnail' => $this->router->generate('app_media_thumbnail_public', [
-                    'shareUid' => $project->getShareUid(),
-                    'id' => $media->getId()
-                ]),
+                'panorama' => $this->getMediaUrl($media, $isPublic),
+                'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
                 'links' => $this->getProjectLinks($media),
                 'caption' => $project->getName()." : ".$media->getName()
             ];

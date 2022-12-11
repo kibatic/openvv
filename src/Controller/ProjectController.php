@@ -46,12 +46,31 @@ class ProjectController extends AbstractController
         $grid = $gridBuilder
             ->create($queryBuilder, $request)
             ->setTheme(Theme::BOOTSTRAP5)
-            ->addColumn('Name', 'name')
+            ->addColumn(
+                'Name',
+                function (Project $project) {
+                    if ($project->isShareActive()) {
+                        return sprintf(
+                            '%s<br/><span class="text-secondary">shared until %s</span>',
+                            $project->getName(),
+                            $project->getShareEndedAt()->format('Y-m-d'),
+                        );
+                    }
+                    return sprintf(
+                        '%s<br/><span class="text-secondary">Not shared</span>',
+                        $project->getName(),
+                    );
+
+                    return $project->getName();
+                },
+                Template::TEXT,
+                ['escape' => false],
+            )
             ->addColumn('Renderer', 'renderer.name')
             ->addColumn(
                 'Created at',
-                'createdAt',
-                Template::DATETIME
+                fn(Project $project) => $project->getCreatedAt()->format('Y-m-d'),
+                Template::TEXT
             )
             ->addColumn(
                 'Actions',
@@ -64,21 +83,14 @@ class ProjectController extends AbstractController
                         'name' => 'Edit',
                         'url' => $this->generateUrl('app_project_edit', ['id' => $project->getId()]),
                     ];
-                    if ($project->isShareActive()) {
-                        $shareButton = [
-                            'name' => 'already shared',
-                            'url' => "#",
-                        ];
-                    } else {
-                        $shareButton = [
-                            'name' => 'Share',
-                            'url' => $this->generateUrl('app_share_new', ['id' => $project->getId()]),
-                        ];
-                    }
+                    $previewButton = [
+                        'name' => 'Preview',
+                        'url' => $this->generateUrl('app_renderer_preview', ['id' => $project->getId()]),
+                    ];
                     return [
                         $showButton,
                         $editButton,
-                        $shareButton
+                        $previewButton
                     ];
                 },
                 Template::ACTIONS

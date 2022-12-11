@@ -7,12 +7,13 @@ use App\Entity\Project;
 use App\Repository\MediaRepository;
 use Symfony\Component\Routing\RouterInterface;
 
-class SimplePanoramaRenderer
+class SimplePanoramaRenderer extends AbstractRenderer
 {
     public function __construct(
         private readonly MediaRepository $mediaRepository,
         private readonly RouterInterface $router,
     ) {
+        parent::__construct($router);
     }
 
     protected function getFirstMedia(Project $project): ?Media
@@ -27,13 +28,10 @@ class SimplePanoramaRenderer
         ;
     }
 
-    public function getPanorama(Project $project): string
+    public function getPanorama(Project $project, bool $isPublic = true): string
     {
         $media = $this->getFirstMedia($project);
-        return $this->router->generate('app_media_download_public', [
-            'shareUid' => $project->getShareUid(),
-            'id' => $media->getId()
-        ]);
+        return $this->getMediaUrl($media, $isPublic);
     }
     public function getInitialPosition(Project $project): array
     {

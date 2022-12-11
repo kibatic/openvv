@@ -6,15 +6,16 @@ use App\Entity\Project;
 use App\Repository\MediaRepository;
 use Symfony\Component\Routing\RouterInterface;
 
-class GalleryRenderer
+class GalleryRenderer extends AbstractRenderer
 {
     public function __construct(
         private readonly MediaRepository $mediaRepository,
         private readonly RouterInterface $router,
     ) {
+        parent::__construct($router);
     }
 
-    public function getItems(Project $project): array
+    public function getItems(Project $project, bool $isPublic = true): array
     {
         $mediaList = $this->mediaRepository->findByProject($project);
 
@@ -23,14 +24,8 @@ class GalleryRenderer
             $items[] = [
                 'id' => 'pano-'.$media->getId(),
                 'name' => $media->getName(),
-                'panorama' => $this->router->generate('app_media_download_public', [
-                    'shareUid' => $project->getShareUid(),
-                    'id' => $media->getId()
-                ]),
-                'thumbnail' => $this->router->generate('app_media_thumbnail_public', [
-                    'shareUid' => $project->getShareUid(),
-                    'id' => $media->getId()
-                ]),
+                'panorama' => $this->getMediaUrl($media, $isPublic),
+                'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
                 'options' => [
                     'caption' => $project->getName()." : ".$media->getName()
                 ]

@@ -44,4 +44,26 @@ class ShareController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/project/{id}/share/delete', name: 'app_share_delete', methods: ['GET', 'POST'])]
+    public function delete(
+        Project $project,
+        Request $request,
+        ProjectRepository $projectRepository,
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        // deny if the user is not the owner of the project
+        if ($user !== $project->getOwner()) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+        if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->request->get('_token'))) {
+            $project->setShareUid(null);
+            $project->setShareStartedAt(null);
+            $project->setShareDurationInDays(null);
+            $projectRepository->save($project, true);
+        }
+        return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
+    }
 }

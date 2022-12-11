@@ -25,7 +25,7 @@
                     {% if project.isShareActive %}
                     <a href="{{ url('app_renderer_view', {shareUid: project.shareUid}) }}">{{ url('app_renderer_view', {shareUid: project.shareUid}) }}</a><br/>
                     {% else %}
-                        Not shared <a href="{{ path('app_share_new', {id: project.id}) }}" class="btn btn-primary">Share</a>
+                        Not shared
                     {% endif %}
                 </td>
             </tr>
@@ -37,7 +37,16 @@
     </table>
 
     <a href="{{ path('app_project_edit', {id: project.id}) }}" class="btn btn-primary">edit</a>
-    <a href="{{ path('app_project_export', {id: project.id}) }}" class="btn btn-primary">export</a>
+    <a href="{{ path('app_project_export', {id: project.id}) }}" class="btn btn-outline-primary">export</a>
+    {% if project.isShareActive %}
+        <form style="display:inline" method="post" action="{{ path('app_share_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure you want to unshare this item ? The id of the sharing will be lost.');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+            <button class="btn btn-outline-primary">Unshare</button>
+        </form>
+    {% else %}
+        <a href="{{ path('app_share_new', {id: project.id}) }}" class="btn btn-outline-primary">Share</a>
+    {% endif %}
+
     {{ include('project/_delete_form.html.twig') }}
 {% endblock %}
 
