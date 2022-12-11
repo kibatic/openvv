@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import Project{% endblock %}
+
+{% block body %}
+    <h1>Import a project from a file</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Import file</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -104,7 +104,7 @@ class Media
             'mediaName' => $this->getMediaName(),
             'mediaSize' => $this->getMediaSize(),
             'orderInProject' => $this->getOrderInProject(),
-            'uploadedAt' => $this->getUploadedAt(),
+            'uploadedAt' => $this->getUploadedAt()->format('Y-m-d H:i:s'),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'initialLatitude' => $this->getInitialLatitude(),
             'initialLongitude' => $this->getInitialLongitude(),

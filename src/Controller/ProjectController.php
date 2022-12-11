@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Media;
 use App\Entity\Project;
+use App\Entity\User;
+use App\ExportImport\Exporter;
+use App\ExportImport\Importer;
+use App\Form\ImportType;
 use App\Form\ProjectType;
-use App\Renderer\GalleryRenderer;
 use App\Repository\MediaRepository;
 use App\Repository\ProjectRepository;
-use App\Viewers\GalleryViewer;
 use Kibatic\DatagridBundle\Grid\GridBuilder;
 use Kibatic\DatagridBundle\Grid\Template;
 use Kibatic\DatagridBundle\Grid\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/project')]
 class ProjectController extends AbstractController
@@ -113,6 +117,42 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    #[Route('/import', name: 'app_project_import', methods: ['GET', 'POST'])]
+    public function import(
+        Request $request,
+        Importer $importer
+    ): Response
+    {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['import_file']->getData();
+            $extension = $file->guessExtension();
+            if (!$extension) {
+                $extension = 'zip';
+            }
+            $dir = sys_get_temp_dir();
+            $filename = Uuid::v4() . '.' . $extension;
+            $file->move($dir, $filename);
+            $zipFile = $dir . '/' . $filename;
+            $project = $importer->importProject($zipFile, $user);
+            $filesystem = new Filesystem();
+            $filesystem->remove($zipFile);
+            $this->addFlash('success', 'Project imported successfully.');
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('project/import.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
     public function show(
         Project $project,
@@ -193,6 +233,30 @@ class ProjectController extends AbstractController
             'grid' => $grid,
         ]);
     }
+
+
+    #[Route('/{id}/export', name: 'app_project_export', methods: ['GET'])]
+    public function export(
+        Project $project,
+        Exporter $exporter,
+        Request $request,
+        RouterInterface $router
+    ): Response
+    {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        $user = $this->getUser();
+
+        // deny access if the user is not the owner of the project
+        if ($project->getOwner() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $exporter->streamResponse($project);
+    }
+
 
     #[Route('/{id}/edit', name: 'app_project_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Project $project, ProjectRepository $projectRepository): Response

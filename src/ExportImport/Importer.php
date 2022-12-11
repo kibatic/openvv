@@ -32,6 +32,7 @@ class Importer
         // create project
         $project = new Project();
         $project->arrayImport($data);
+        $project->setName($project->getName() . ' (imported)');
         $project->setOwner($owner);
         $this->entityManager->persist($project);
 
