@@ -29,7 +29,9 @@ class GalleryRenderer extends AbstractRenderer
                 'defaultYaw' => $media->getInitialYaw(),
                 'defaultPitch' => $media->getInitialPitch(),
                 'options' => [
-                    'caption' => $project->getName()." : ".$media->getName()
+                    'caption' => $project->getName()." : ".$media->getName(),
+                    'defaultYaw' => $media->getInitialYaw(),
+                    'defaultPitch' => $media->getInitialPitch(),
                 ]
             ];
         }
