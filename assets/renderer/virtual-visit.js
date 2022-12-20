@@ -6,12 +6,15 @@ import {AutorotatePlugin} from "@photo-sphere-viewer/autorotate-plugin";
 
 const container = document.querySelector('#viewer');
 
-// get the panorama URL from the container's data attribute
-const panorama = container.dataset.panorama;
+const nodes = JSON.parse(container.dataset.nodes);
 
 const viewer = new Viewer({
     container: container,
-    panorama: panorama,
+    panorama: nodes[0].panorama,
+    thumbnail: nodes[0].thumbnail,
+    caption: nodes[0].caption,
+    defaultYaw: nodes[0].defaultYaw,
+    defaultPitch: nodes[0].defaultPitch,
     navbar: [
         'autorotate',
         'caption',
@@ -35,7 +38,7 @@ const viewer = new Viewer({
 const virtualTour = viewer.getPlugin(VirtualTourPlugin);
 const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
-virtualTour.setNodes(JSON.parse(container.dataset.nodes));
+virtualTour.setNodes(nodes);
 const linkRotations = JSON.parse(container.dataset.linkRotations);
 const mediaRotations = JSON.parse(container.dataset.mediaRotations);
 

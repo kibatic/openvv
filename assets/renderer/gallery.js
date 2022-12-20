@@ -10,7 +10,7 @@ const viewer = new Viewer({
     container: container,
     panorama: items[0].panorama,
     thumbnail: items[0].thumbnail,
-    caption: items[0].caption,
+    caption: items[0].options.caption,
     defaultYaw: items[0].defaultYaw,
     defaultPitch: items[0].defaultPitch,
     navbar: [
