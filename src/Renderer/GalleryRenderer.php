@@ -28,10 +28,14 @@ class GalleryRenderer extends AbstractRenderer
                 'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
                 'defaultYaw' => $media->getInitialYaw(),
                 'defaultPitch' => $media->getInitialPitch(),
+                'defaultLong' => $media->getInitialYaw(),
+                'defaultLat' => $media->getInitialPitch(),
                 'options' => [
                     'caption' => $project->getName()." : ".$media->getName(),
                     'defaultYaw' => $media->getInitialYaw(),
                     'defaultPitch' => $media->getInitialPitch(),
+                    'longitude' => $media->getInitialYaw(),
+                    'latitude' => $media->getInitialPitch(),
                 ]
             ];
         }
