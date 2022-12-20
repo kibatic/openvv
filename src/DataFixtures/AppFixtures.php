@@ -72,6 +72,7 @@ class AppFixtures extends Fixture
                 ->setMediaSize(1000)
                 ->setName('media no '.$i)
                 ->setOrderInProject($i)
+                ->setUploadedAt(new \DateTimeImmutable())
                 ->setInitialYaw(0)
                 ->setInitialPitch(0)
             ;

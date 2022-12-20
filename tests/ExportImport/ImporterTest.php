@@ -40,7 +40,7 @@ class ImporterTest extends KernelTestCase
 
         $this->assertSame($bob, $importedProject->getOwner());
         $this->assertSame($alice, $project->getOwner());
-        $this->assertSame($importedProject->getName(), $project->getName());
+        $this->assertSame($importedProject->getName(), $project->getName(). ' (imported)');
         $this->assertTrue($importedProject->getId() > $project->getId());
 
         $aliceMediaList = $mediaRepo->findByProject($project);

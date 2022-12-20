@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+
+  web:
+    build:
+      target: dev
+    volumes:
+      - .:/var/www
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      XDEBUG_CONFIG: "PHPSTORM"
+      PHP_IDE_CONFIG: "serverName=localhost"
+  database:
+    ports:
+      - 5432:5432
+  mailer:
+    image: schickling/mailcatcher
+    ports: [ 1025, 1080 ]
