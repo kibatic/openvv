@@ -34,7 +34,3 @@ const gallery = viewer.getPlugin(GalleryPlugin);
 gallery.setItems(items);
 const autorotate = viewer.getPlugin(AutorotatePlugin);
 autorotate.stop();
-
-viewer.addEventListener('panorama-loaded', ({ data}) => {
-    console.log(data);
-})
