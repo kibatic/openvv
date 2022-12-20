@@ -47,7 +47,7 @@ class MediaController extends AbstractController
             $entityManager->persist($media);
             $entityManager->flush();
             $this->addFlash('success', 'Media created successfully.');
-            return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
+            return $this->redirectToRoute('app_media_edit', ['id' => $media->getId()]);
         }
 
         return $this->render('media/new.html.twig', [
