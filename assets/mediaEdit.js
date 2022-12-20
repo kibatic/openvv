@@ -16,6 +16,6 @@ const viewer = new Viewer({
 });
 
 viewer.addEventListener('position-updated', ({ position }) => {
-    document.querySelector('#media_edit_initialLongitude').value = position.yaw;
-    document.querySelector('#media_edit_initialLatitude').value = position.pitch;
+    document.querySelector('#media_edit_initialYaw').value = position.yaw;
+    document.querySelector('#media_edit_initialPitch').value = position.pitch;
 });

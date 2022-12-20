@@ -29,8 +29,8 @@ class VirtualVisitRenderer extends AbstractRenderer
                 'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
                 'links' => $this->getProjectLinks($media),
                 'caption' => $project->getName()." : ".$media->getName(),
-                'defaultYaw' => $media->getInitialLongitude(),
-                'defaultPitch' => $media->getInitialLatitude(),
+                'defaultYaw' => $media->getInitialYaw(),
+                'defaultPitch' => $media->getInitialPitch(),
             ];
         }
         return $nodes;
@@ -40,10 +40,10 @@ class VirtualVisitRenderer extends AbstractRenderer
     {
         $linksBySource = $this->linkRepository->createQueryBuilder('l')
             ->where('l.sourceMedia = :media')
-            ->andWhere('l.sourceLongitude IS NOT NULL')
-            ->andWhere('l.sourceLatitude IS NOT NULL')
-            ->andWhere('l.targetLatitude IS NOT NULL')
-            ->andWhere('l.targetLongitude IS NOT NULL')
+            ->andWhere('l.sourceYaw IS NOT NULL')
+            ->andWhere('l.sourcePitch IS NOT NULL')
+            ->andWhere('l.targetYaw IS NOT NULL')
+            ->andWhere('l.targetPitch IS NOT NULL')
             ->setParameter('media', $media)
             ->getQuery()->getResult()
         ;
@@ -57,8 +57,8 @@ class VirtualVisitRenderer extends AbstractRenderer
         foreach ($links as $link) {
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
-                'pitch' => $link->getSourceLatitude(),
-                'yaw' => $link->getSourceLongitude()
+                'pitch' => $link->getSourcePitch(),
+                'yaw' => $link->getSourceYaw()
             ];
         }
         return $projectLinks;
@@ -70,8 +70,8 @@ class VirtualVisitRenderer extends AbstractRenderer
         $rotations = [];
         foreach ($mediaList as $media) {
             $rotations[$media->getNodeId()] = [
-                'yaw' => $media->getInitialLongitude(),
-                'pitch' => $media->getInitialLatitude(),
+                'yaw' => $media->getInitialYaw(),
+                'pitch' => $media->getInitialPitch(),
             ];
         }
         return $rotations;
@@ -87,8 +87,8 @@ class VirtualVisitRenderer extends AbstractRenderer
                 $rotations[$link->getSourceMedia()->getNodeId()] = [];
             }
             $rotations[$link->getSourceMedia()->getNodeId()][$link->getTargetMedia()->getNodeId()] = [
-                'yaw' => $link->getTargetLongitude(),
-                'pitch' => $link->getTargetLatitude(),
+                'yaw' => $link->getTargetYaw(),
+                'pitch' => $link->getTargetPitch(),
             ];
         }
         return $rotations;

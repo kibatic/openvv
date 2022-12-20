@@ -22,16 +22,16 @@ class Link
     private ?Media $targetMedia = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $sourceLatitude = null;
+    private ?float $sourcePitch = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $sourceLongitude = null;
+    private ?float $sourceYaw = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $targetLatitude = null;
+    private ?float $targetPitch = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $targetLongitude = null;
+    private ?float $targetYaw = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -43,10 +43,10 @@ class Link
 
     public function isComplete()
     {
-        return $this->getSourceLatitude() !== null
-            && $this->getSourceLongitude() !== null
-            && $this->getTargetLatitude() !== null
-            && $this->getTargetLongitude() !== null;
+        return $this->getSourcePitch() !== null
+            && $this->getSourceYaw() !== null
+            && $this->getTargetPitch() !== null
+            && $this->getTargetYaw() !== null;
     }
 
     public function arrayExport()
@@ -56,19 +56,19 @@ class Link
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'sourceMediaId' => $this->getSourceMedia()->getId(),
             'targetMediaId' => $this->getTargetMedia()->getId(),
-            'sourceLatitude' => $this->getSourceLatitude(),
-            'sourceLongitude' => $this->getSourceLongitude(),
-            'targetLatitude' => $this->getTargetLatitude(),
-            'targetLongitude' => $this->getTargetLongitude(),
+            'sourcePitch' => $this->getSourcePitch(),
+            'sourceYaw' => $this->getSourceYaw(),
+            'targetPitch' => $this->getTargetPitch(),
+            'targetYaw' => $this->getTargetYaw(),
         ];
     }
 
     public function arrayImport(array $data)
     {
-        $this->setSourceLatitude($data['sourceLatitude']);
-        $this->setSourceLongitude($data['sourceLongitude']);
-        $this->setTargetLatitude($data['targetLatitude']);
-        $this->setTargetLongitude($data['targetLongitude']);
+        $this->setSourcePitch($data['sourcePitch']);
+        $this->setSourceYaw($data['sourceYaw']);
+        $this->setTargetPitch($data['targetPitch']);
+        $this->setTargetYaw($data['targetYaw']);
     }
 
     public function getId(): ?int
@@ -100,74 +100,50 @@ class Link
         return $this;
     }
 
-    public function getSourceTextureX(): ?int
+    public function getSourcePitch(): ?float
     {
-        return $this->sourceTextureX;
+        return $this->sourcePitch ?? 0;
     }
 
-    public function setSourceTextureX(?int $sourceTextureX): self
+    public function setSourcePitch(?float $sourcePitch): self
     {
-        $this->sourceTextureX = $sourceTextureX;
+        $this->sourcePitch = $sourcePitch;
 
         return $this;
     }
 
-    public function getSourceTextureY(): ?int
+    public function getSourceYaw(): ?float
     {
-        return $this->sourceTextureY;
+        return $this->sourceYaw ?? 0;
     }
 
-    public function setSourceTextureY(?int $sourceTextureY): self
+    public function setSourceYaw(?float $sourceYaw): self
     {
-        $this->sourceTextureY = $sourceTextureY;
+        $this->sourceYaw = $sourceYaw;
 
         return $this;
     }
 
-    public function getSourceLatitude(): ?float
+    public function getTargetPitch(): ?float
     {
-        return $this->sourceLatitude ?? 0;
+        return $this->targetPitch ?? 0;
     }
 
-    public function setSourceLatitude(?float $sourceLatitude): self
+    public function setTargetPitch(?float $targetPitch): self
     {
-        $this->sourceLatitude = $sourceLatitude;
+        $this->targetPitch = $targetPitch;
 
         return $this;
     }
 
-    public function getSourceLongitude(): ?float
+    public function getTargetYaw(): ?float
     {
-        return $this->sourceLongitude ?? 0;
+        return $this->targetYaw ?? 0;
     }
 
-    public function setSourceLongitude(?float $sourceLongitude): self
+    public function setTargetYaw(?float $targetYaw): self
     {
-        $this->sourceLongitude = $sourceLongitude;
-
-        return $this;
-    }
-
-    public function getTargetLatitude(): ?float
-    {
-        return $this->targetLatitude ?? 0;
-    }
-
-    public function setTargetLatitude(?float $targetLatitude): self
-    {
-        $this->targetLatitude = $targetLatitude;
-
-        return $this;
-    }
-
-    public function getTargetLongitude(): ?float
-    {
-        return $this->targetLongitude ?? 0;
-    }
-
-    public function setTargetLongitude(?float $targetLongitude): self
-    {
-        $this->targetLongitude = $targetLongitude;
+        $this->targetYaw = $targetYaw;
 
         return $this;
     }

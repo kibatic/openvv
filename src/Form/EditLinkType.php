@@ -12,10 +12,10 @@ class EditLinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sourceLatitude')
-            ->add('sourceLongitude')
-            ->add('targetLatitude')
-            ->add('targetLongitude')
+            ->add('sourcePitch')
+            ->add('sourceYaw')
+            ->add('targetPitch')
+            ->add('targetYaw')
         ;
     }
 

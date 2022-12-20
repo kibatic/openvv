@@ -7,8 +7,8 @@ const targetContainer = document.querySelector('#targetViewer');
 const sourceViewer = new Viewer({
     container: sourceContainer,
     panorama: sourceContainer.dataset.panorama,
-    defaultYaw: sourceContainer.dataset.longitude,
-    defaultPitch: sourceContainer.dataset.latitude,
+    defaultYaw: sourceContainer.dataset.yaw,
+    defaultPitch: sourceContainer.dataset.pitch,
     plugins: [
         [MarkersPlugin, {
             markers: [
@@ -16,8 +16,8 @@ const sourceViewer = new Viewer({
                     id: 'old-marker',
                     circle: 20,
                     position: {
-                        yaw: sourceContainer.dataset.longitude,
-                        pitch: sourceContainer.dataset.latitude
+                        yaw: sourceContainer.dataset.yaw,
+                        pitch: sourceContainer.dataset.pitch
                     },
                     tooltip: 'Source image marker position'
                 }
@@ -29,8 +29,8 @@ const sourceViewer = new Viewer({
 const targetViewer = new Viewer({
     container: targetContainer,
     panorama: targetContainer.dataset.panorama,
-    defaultYaw: targetContainer.dataset.longitude,
-    defaultPitch: targetContainer.dataset.latitude,
+    defaultYaw: targetContainer.dataset.yaw,
+    defaultPitch: targetContainer.dataset.pitch,
 });
 
 const sourceMarkersPlugin = sourceViewer.getPlugin(MarkersPlugin);
@@ -46,11 +46,11 @@ sourceViewer.addEventListener('click', ({ data }) => {
         },
         tooltip: 'Source image marker position'
     });
-    document.querySelector('#edit_link_sourceLongitude').value = data.yaw;
-    document.querySelector('#edit_link_sourceLatitude').value = data.pitch;
+    document.querySelector('#edit_link_sourceYaw').value = data.yaw;
+    document.querySelector('#edit_link_sourcePitch').value = data.pitch;
 });
 
 targetViewer.addEventListener('position-updated', ({ position }) => {
-    document.querySelector('#edit_link_targetLongitude').value = position.yaw;
-    document.querySelector('#edit_link_targetLatitude').value = position.pitch;
+    document.querySelector('#edit_link_targetYaw').value = position.yaw;
+    document.querySelector('#edit_link_targetPitch').value = position.pitch;
 });

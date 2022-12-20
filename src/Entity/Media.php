@@ -54,10 +54,10 @@ class Media
     private ?int $orderInProject = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $initialLatitude = null;
+    private ?float $initialPitch = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $initialLongitude = null;
+    private ?float $initialYaw = null;
 
     // create constructor
     public function __construct()
@@ -90,8 +90,8 @@ class Media
     public function getInitialPosition(): array
     {
         return [
-            'pitch' => $this->getInitialLatitude() ?? 0,
-            'yaw' => $this->getInitialLongitude() ?? 0,
+            'pitch' => $this->getInitialPitch() ?? 0,
+            'yaw' => $this->getInitialYaw() ?? 0,
         ];
     }
 
@@ -106,8 +106,8 @@ class Media
             'orderInProject' => $this->getOrderInProject(),
             'uploadedAt' => $this->getUploadedAt()->format('Y-m-d H:i:s'),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
-            'initialLatitude' => $this->getInitialLatitude(),
-            'initialLongitude' => $this->getInitialLongitude(),
+            'initialPitch' => $this->getInitialPitch(),
+            'initialYaw' => $this->getInitialYaw(),
         ];
     }
 
@@ -118,8 +118,8 @@ class Media
         $this->setMediaSize($data['mediaSize']);
         $this->setOrderInProject($data['orderInProject']);
         $this->setUploadedAt(new \DateTimeImmutable($data['uploadedAt']));
-        $this->setInitialLatitude($data['initialLatitude']);
-        $this->setInitialLongitude($data['initialLongitude']);
+        $this->setInitialPitch($data['initialPitch']);
+        $this->setInitialYaw($data['initialYaw']);
     }
 
     public function getId(): ?int
@@ -294,26 +294,26 @@ class Media
         return $this;
     }
 
-    public function getInitialLatitude(): ?float
+    public function getInitialPitch(): ?float
     {
-        return $this->initialLatitude ?? 0;
+        return $this->initialPitch ?? 0;
     }
 
-    public function setInitialLatitude(?float $initialLatitude): self
+    public function setInitialPitch(?float $initialPitch): self
     {
-        $this->initialLatitude = $initialLatitude;
+        $this->initialPitch = $initialPitch;
 
         return $this;
     }
 
-    public function getInitialLongitude(): ?float
+    public function getInitialYaw(): ?float
     {
-        return $this->initialLongitude ?? 0;
+        return $this->initialYaw ?? 0;
     }
 
-    public function setInitialLongitude(?float $initialLongitude): self
+    public function setInitialYaw(?float $initialYaw): self
     {
-        $this->initialLongitude = $initialLongitude;
+        $this->initialYaw = $initialYaw;
 
         return $this;
     }

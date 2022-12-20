@@ -24,7 +24,7 @@ const viewer = new Viewer({
 const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
 viewer.addEventListener('click', ({ data }) => {
-    console.log(`${data.rightclick?'right ':''}clicked at longitude: ${data.yaw} latitude: ${data.pitch}`);
+    console.log(`${data.rightclick?'right ':''}clicked at yaw: ${data.yaw} pitch: ${data.pitch}`);
     console.log(data);
     markersPlugin.clearMarkers();
     markersPlugin.addMarker({
@@ -36,7 +36,7 @@ viewer.addEventListener('click', ({ data }) => {
         },
         tooltip: 'circle marker'
     });
-    document.querySelector('#link_sourceLongitude').value = data.yaw;
-    document.querySelector('#link_sourceLatitude').value = data.pitch;
+    document.querySelector('#link_sourceYaw').value = data.yaw;
+    document.querySelector('#link_sourcePitch').value = data.pitch;
 });
 

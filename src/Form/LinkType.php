@@ -28,8 +28,8 @@ class LinkType extends AbstractType
                     ;
                 },
             ])
-            ->add('sourceLatitude', HiddenType::class)
-            ->add('sourceLongitude', HiddenType::class)
+            ->add('sourcePitch', HiddenType::class)
+            ->add('sourceYaw', HiddenType::class)
         ;
     }
 

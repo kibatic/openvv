@@ -72,8 +72,8 @@ class AppFixtures extends Fixture
                 ->setMediaSize(1000)
                 ->setName('media no '.$i)
                 ->setOrderInProject($i)
-                ->setInitialLongitude(0)
-                ->setInitialLatitude(0)
+                ->setInitialYaw(0)
+                ->setInitialPitch(0)
             ;
             $mediaList[] = $media;
             $manager->persist($media);
@@ -104,10 +104,10 @@ class AppFixtures extends Fixture
         $link = new Link();
         $link->setSourceMedia($mediaList[$sourceMedia]);
         $link->setTargetMedia($mediaList[$targetMedia]);
-        $link->setSourceLatitude(0+$sourceMedia);
-        $link->setSourceLongitude(0+$targetMedia);
-        $link->setTargetLatitude($sourceMedia+1.5);
-        $link->setTargetLongitude($targetMedia+1.5);
+        $link->setSourcePitch(0+$sourceMedia);
+        $link->setSourceYaw(0+$targetMedia);
+        $link->setTargetPitch($sourceMedia+1.5);
+        $link->setTargetYaw($targetMedia+1.5);
         return $link;
     }
 

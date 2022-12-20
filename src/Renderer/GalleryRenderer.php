@@ -26,8 +26,8 @@ class GalleryRenderer extends AbstractRenderer
                 'name' => $media->getName(),
                 'panorama' => $this->getMediaUrl($media, $isPublic),
                 'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
-                'defaultYaw' => $media->getInitialLongitude(),
-                'defaultPitch' => $media->getInitialLatitude(),
+                'defaultYaw' => $media->getInitialYaw(),
+                'defaultPitch' => $media->getInitialPitch(),
                 'options' => [
                     'caption' => $project->getName()." : ".$media->getName()
                 ]

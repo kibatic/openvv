@@ -22,8 +22,8 @@ class MediaEditType extends AbstractType
                 'required' => false,
                 'label' => 'Media',
             ])
-            ->add('initialLongitude')
-            ->add('initialLatitude')
+            ->add('initialYaw')
+            ->add('initialPitch')
             ->add('orderInProject')
         ;
     }
