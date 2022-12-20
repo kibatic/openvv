@@ -28,7 +28,9 @@ class VirtualVisitRenderer extends AbstractRenderer
                 'panorama' => $this->getMediaUrl($media, $isPublic),
                 'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
                 'links' => $this->getProjectLinks($media),
-                'caption' => $project->getName()." : ".$media->getName()
+                'caption' => $project->getName()." : ".$media->getName(),
+                'defaultYaw' => $media->getInitialLongitude(),
+                'defaultPitch' => $media->getInitialLatitude(),
             ];
         }
         return $nodes;
@@ -55,8 +57,8 @@ class VirtualVisitRenderer extends AbstractRenderer
         foreach ($links as $link) {
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
-                'latitude' => $link->getSourceLatitude(),
-                'longitude' => $link->getSourceLongitude()
+                'pitch' => $link->getSourceLatitude(),
+                'yaw' => $link->getSourceLongitude()
             ];
         }
         return $projectLinks;
@@ -68,8 +70,8 @@ class VirtualVisitRenderer extends AbstractRenderer
         $rotations = [];
         foreach ($mediaList as $media) {
             $rotations[$media->getNodeId()] = [
-                'longitude' => $media->getInitialLongitude(),
-                'latitude' => $media->getInitialLatitude(),
+                'yaw' => $media->getInitialLongitude(),
+                'pitch' => $media->getInitialLatitude(),
             ];
         }
         return $rotations;
@@ -85,8 +87,8 @@ class VirtualVisitRenderer extends AbstractRenderer
                 $rotations[$link->getSourceMedia()->getNodeId()] = [];
             }
             $rotations[$link->getSourceMedia()->getNodeId()][$link->getTargetMedia()->getNodeId()] = [
-                'longitude' => $link->getTargetLongitude(),
-                'latitude' => $link->getTargetLatitude(),
+                'yaw' => $link->getTargetLongitude(),
+                'pitch' => $link->getTargetLatitude(),
             ];
         }
         return $rotations;

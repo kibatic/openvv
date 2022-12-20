@@ -90,8 +90,8 @@ class Media
     public function getInitialPosition(): array
     {
         return [
-            'latitude' => $this->getInitialLatitude() ?? 0,
-            'longitude' => $this->getInitialLongitude() ?? 0,
+            'pitch' => $this->getInitialLatitude() ?? 0,
+            'yaw' => $this->getInitialLongitude() ?? 0,
         ];
     }
 

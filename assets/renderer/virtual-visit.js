@@ -1,6 +1,6 @@
-import { Viewer } from 'photo-sphere-viewer';
-import { VirtualTourPlugin } from 'photo-sphere-viewer/dist/plugins/virtual-tour';
-import { MarkersPlugin } from 'photo-sphere-viewer/dist/plugins/markers';
+import { Viewer } from '@photo-sphere-viewer/core';
+import { VirtualTourPlugin } from '@photo-sphere-viewer/virtual-tour-plugin';
+import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
 
 const container = document.querySelector('#viewer');
 
@@ -10,15 +10,15 @@ const panorama = container.dataset.panorama;
 const viewer = new Viewer({
     container: container,
     panorama: panorama,
-    navbar: [
-        'autorotate',
-        'caption',
-        'fullscreen',
-    ],
+    // navbar: [
+    //     'autorotate',
+    //     'caption',
+    //     'fullscreen',
+    // ],
     plugins: [
         [VirtualTourPlugin, {
-            positionMode: VirtualTourPlugin.MODE_MANUAL,
-            renderMode  : VirtualTourPlugin.MODE_3D,
+            positionMode: 'manual',
+            renderMode  : '3d',
             transition : false
         }],
 
@@ -34,10 +34,10 @@ virtualTour.setNodes(JSON.parse(container.dataset.nodes));
 const linkRotations = JSON.parse(container.dataset.linkRotations);
 const mediaRotations = JSON.parse(container.dataset.mediaRotations);
 
-virtualTour.on('node-changed', (e, nodeId, data) => {
+virtualTour.addEventListener('node-changed', ({node, data}) => {
     if (data.fromNode) { // other data are available
-        viewer.rotate(linkRotations[data.fromNode.id][nodeId]);
+        viewer.rotate(linkRotations[data.fromNode.id][node.id]);
     } else {
-        viewer.rotate(mediaRotations[nodeId]);
+        viewer.rotate(mediaRotations[node.id]);
     }
 });

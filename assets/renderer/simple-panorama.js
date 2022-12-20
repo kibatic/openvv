@@ -1,4 +1,4 @@
-import { Viewer } from 'photo-sphere-viewer';
+import { Viewer } from '@photo-sphere-viewer/core';
 
 const container = document.querySelector('#viewer');
 

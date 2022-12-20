@@ -25,6 +25,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "photo-sphere-viewer": "^4.8.0"
+        "@photo-sphere-viewer/core": "^5.0.0",
+        "@photo-sphere-viewer/gallery-plugin": "^5.0.0",
+        "@photo-sphere-viewer/markers-plugin": "^5.0.0",
+        "@photo-sphere-viewer/video-plugin": "^5.0.0",
+        "@photo-sphere-viewer/virtual-tour-plugin": "^5.0.0"
     }
 }

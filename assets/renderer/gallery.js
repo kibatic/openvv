@@ -1,5 +1,5 @@
-import { Viewer } from 'photo-sphere-viewer';
-import { GalleryPlugin } from 'photo-sphere-viewer/dist/plugins/gallery';
+import { Viewer } from '@photo-sphere-viewer/core';
+import { GalleryPlugin } from '@photo-sphere-viewer/gallery-plugin';
 
 const container = document.querySelector('#viewer');
 
@@ -22,6 +22,3 @@ const viewer = new Viewer({
 
 const gallery = viewer.getPlugin(GalleryPlugin);
 gallery.setItems(JSON.parse(container.dataset.items));
-viewer.once('open-panel', () => {
-    console
-});

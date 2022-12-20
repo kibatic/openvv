@@ -37,8 +37,8 @@ class SimplePanoramaRenderer extends AbstractRenderer
     {
         $media = $this->getFirstMedia($project);
         return [
-            'longitude' => $media->getInitialLongitude(),
-            'latitude' => $media->getInitialLatitude(),
+            'yaw' => $media->getInitialLongitude(),
+            'pitch' => $media->getInitialLatitude(),
         ];
     }
 }

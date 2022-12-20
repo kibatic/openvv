@@ -10,10 +10,10 @@ require('bootstrap');
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
-import './styles/photo-sphere-viewer.min.css';
-import 'photo-sphere-viewer/dist/plugins/gallery.css';
-import 'photo-sphere-viewer/dist/plugins/virtual-tour.css';
-import 'photo-sphere-viewer/dist/plugins/markers.css';
+import '@photo-sphere-viewer/core/index.scss';
+import '@photo-sphere-viewer/gallery-plugin/index.scss';
+import '@photo-sphere-viewer/virtual-tour-plugin/index.scss';
+import '@photo-sphere-viewer/markers-plugin/index.scss';
 
 // start the Stimulus application
 import './bootstrap';
