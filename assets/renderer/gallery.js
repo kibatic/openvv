@@ -4,10 +4,15 @@ import { AutorotatePlugin } from '@photo-sphere-viewer/autorotate-plugin';
 
 const container = document.querySelector('#viewer');
 
+const items = JSON.parse(container.dataset.items);
+
 const viewer = new Viewer({
     container: container,
-    panorama: container.dataset.panorama,
-    caption: container.dataset.caption,
+    panorama: items[0].panorama,
+    thumbnail: items[0].thumbnail,
+    caption: items[0].caption,
+    defaultYaw: items[0].defaultYaw,
+    defaultPitch: items[0].defaultPitch,
     navbar: [
         'autorotate',
         'caption',
@@ -26,6 +31,6 @@ const viewer = new Viewer({
 });
 
 const gallery = viewer.getPlugin(GalleryPlugin);
-gallery.setItems(JSON.parse(container.dataset.items));
+gallery.setItems(items);
 const autorotate = viewer.getPlugin(AutorotatePlugin);
 autorotate.stop();
