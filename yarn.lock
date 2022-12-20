@@ -997,7 +997,7 @@
     error-stack-parser "^2.0.0"
     string-width "^4.2.3"
 
-"@photo-sphere-viewer/autorotate-plugin@5.0.0":
+"@photo-sphere-viewer/autorotate-plugin@5.0.0", "@photo-sphere-viewer/autorotate-plugin@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/autorotate-plugin/-/autorotate-plugin-5.0.0.tgz#dce92b78cb4c4a0142b9ae74a639351e15467d32"
   integrity sha512-0/+GfhNuMKORaS1/NINmI/VHWJvE5ZKdfb6Pin1m1zDZe79cGZfiouS2glxjlbY6DCFNA7dRC6ZeQqv+Xy9IKQ==

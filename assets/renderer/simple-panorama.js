@@ -7,9 +7,16 @@ const viewer = new Viewer({
     panorama: container.dataset.panorama,
     caption: container.dataset.caption,
     navbar: [
-        'autorotate',
         'caption',
         'fullscreen',
-    ]
+    ],
+    plugins: [
+        [AutorotatePlugin, {
+            autostartDelay: 30000,
+            autostartOnIdle: false,
+        }]
+    ],
 });
 viewer.rotate(JSON.parse(container.dataset.initialPosition));
+const autorotate = viewer.getPlugin(AutorotatePlugin);
+autorotate.stop();
