@@ -60,8 +60,6 @@ class ProjectController extends AbstractController
                         '%s<br/><span class="text-secondary">Not shared</span>',
                         $project->getName(),
                     );
-
-                    return $project->getName();
                 },
                 Template::TEXT,
                 ['escape' => false],
@@ -89,7 +87,7 @@ class ProjectController extends AbstractController
                     ];
                     return [
                         $showButton,
-                        $editButton,
+                        //$editButton,
                         $previewButton
                     ];
                 },
@@ -229,10 +227,6 @@ class ProjectController extends AbstractController
                     [
                         'name' => 'Show',
                         'url' => $this->generateUrl('app_media_show', ['id' => $media->getId()]),
-                    ],
-                    [
-                        'name' => 'Edit',
-                        'url' => $this->generateUrl('app_media_edit', ['id' => $media->getId()]),
                     ]
                 ],
                 Template::ACTIONS

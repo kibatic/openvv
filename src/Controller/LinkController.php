@@ -37,6 +37,36 @@ class LinkController extends AbstractController
         ]);
     }
 
+    #[Route('/link/{id}/create-backlink', name: 'app_link_create_backlink', methods: ['POST'])]
+    public function createBacklink(
+        Request $request,
+        Link $link,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        $user = $this->getUser();
+
+        // deny access if the user is not the owner of the project
+        if ($link->getSourceMedia()->getProject()->getOwner() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('create_backlink'.$link->getId(), $request->request->get('_token'))) {
+            $backlink = new Link();
+            $backlink->setSourceMedia($link->getTargetMedia());
+            $backlink->setTargetMedia($link->getSourceMedia());
+            $entityManager->persist($backlink);
+            $entityManager->flush();
+            $this->addFlash('success', 'Back link created successfully.');
+            return $this->redirectToRoute('app_link_edit', ['id' => $backlink->getId()]);
+        }
+
+        return $this->redirectToRoute('app_media_show', ['id' => $link->getSourceMedia()->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/link/{id}/delete', name: 'app_link_delete', methods: ['POST'])]
     public function delete(
         Request $request,

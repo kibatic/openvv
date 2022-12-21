@@ -62,6 +62,7 @@ class MediaController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         LinkRepository $linkRepository,
+        MediaRepository $mediaRepository,
     ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -71,10 +72,21 @@ class MediaController extends AbstractController
             throw $this->createAccessDeniedException('You are not allowed to access this page.');
         }
 
+        // check if we need the link creation form
+        $targetMediaList = $mediaRepository->createQueryBuilder('m')
+            ->where('m.project = :project')
+            ->andWhere('m.id != :currentMedia')
+            ->orderBy('m.orderInProject', 'ASC')
+            ->setParameter('currentMedia', $media->getId())
+            ->setParameter('project',$media->getProject())
+            ->getQuery()
+            ->getResult()
+        ;
+
         // create a form for a new Link
         $link = new Link();
         $link->setSourceMedia($media);
-        $form = $this->createForm(LinkType::class, $link, ['project' => $media->getProject()]);
+        $form = $this->createForm(LinkType::class, $link, ['project' => $media->getProject(), 'media' => $media]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,10 +102,19 @@ class MediaController extends AbstractController
             ->orderBy('l.createdAt', 'DESC');
         $fromMeLinks = $qb->getQuery()->getResult();
 
+        $backLinks = [];
+        foreach ($fromMeLinks as $link) {
+            if ($backlink = $linkRepository->getBackLink($link)) {
+                $backLinks['link-'.$link->getId()] = $backlink->getId();
+            }
+        }
+
         return $this->render('media/show.html.twig', [
             'media' => $media,
             'form' => $form->createView(),
             'fromMeLinks' => $fromMeLinks,
+            'targetMediaList' => $targetMediaList,
+            'backLinks' => $backLinks,
         ]);
     }
 

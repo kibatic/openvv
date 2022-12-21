@@ -23,7 +23,9 @@ class LinkType extends AbstractType
                 'query_builder' => function (MediaRepository $repo) use ($options) {
                     return $repo->createQueryBuilder('m')
                         ->where('m.project = :project')
+                        ->andWhere('m.id != :currentMedia')
                         ->orderBy('m.orderInProject', 'ASC')
+                        ->setParameter('currentMedia', $options['media']->getId())
                         ->setParameter('project', $options['project'])
                     ;
                 },
@@ -38,6 +40,7 @@ class LinkType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Link::class,
             'project' => null,
+            'media' => null,
         ]);
         $resolver->addAllowedTypes('project', Project::class);
     }

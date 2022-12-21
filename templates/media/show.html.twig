@@ -21,11 +21,12 @@
 
     <div
         id="viewer"
-        style="width: 100%; height: 70vh;"
+        style="width: 100%; height: 50vh;"
         data-panorama="{{ path('app_media_download', {id: media.id}) }}"
         data-initial-position="{{ media.initialPosition|json_encode|escape('html_attr') }}"
     ></div>
 
+    <br/>
     <a href="{{ path('app_media_edit', {id: media.id}) }}" class="btn btn-primary">Edit</a>
     <form method="post"  style="display:inline" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ media.id) }}">
@@ -36,30 +37,47 @@
 
 {% block aside %}
     <h2>Links from this media</h2>
-    {% for link in fromMeLinks %}
-        <div class="card mb-3 bg-light">
-            <div class="card-body">
-                {% if link.isComplete %}
-                    <span class="link-badge badge text-bg-success">ok</span>
-                {% else %}
-                    <span class="link-badge badge text-bg-warning">uncomplete</span>
-                {% endif %}
-                <small>From: </small>{{ link.sourceMedia.name }}<br/>
-                <small>To: </small>{{ link.targetMedia.name }}<br/>
+    {% if fromMeLinks|length == 0 %}
+        <div class="alert alert-info" role="alert">No link from this media</div>
+    {% else %}
+        {% for link in fromMeLinks %}
+            <div class="card mb-3 bg-light">
+                <div class="card-body">
+                    {% if link.isComplete %}
+                        <span class="link-badge badge text-bg-success">ok</span>
+                    {% else %}
+                        <span class="link-badge badge text-bg-warning">uncomplete</span>
+                    {% endif %}
+                    <small>From: </small>{{ link.sourceMedia.name }}<br/>
+                    <small>To: </small>{{ link.targetMedia.name }}<br/>
 
-                <a href="{{ path('app_link_edit', {id: link.id}) }}" class="btn btn-primary btn-sm">Edit link</a>
+                    <a href="{{ path('app_link_edit', {id: link.id}) }}" class="btn btn-primary btn-sm">Edit link</a>
+                    {% if backLinks['link-' ~ link.id]|default(null) %}
+                        <a href="{{ path('app_link_edit', {id: backLinks['link-' ~ link.id]}) }}" class="btn btn-outline-primary btn-sm">Edit backlink</a>
+                    {% else %}
+                        <form style="display: inline" method="post" action="{{ path('app_link_create_backlink', {'id': link.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('create_backlink' ~ link.id) }}">
+                            <button class="btn btn-primary btn-sm">Create backlink</button>
+                        </form>
+                    {% endif %}
 
-                <form style="display: inline" method="post" action="{{ path('app_link_delete', {'id': link.id}) }}" onsubmit="return confirm('Are you sure you want to delete the link from {{ link.sourceMedia.name }} to {{ link.targetMedia.name }} ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ link.id) }}">
-                    <button class="btn btn-outline-danger btn-sm">Delete</button>
-                </form>
+                    <form style="display: inline" method="post" action="{{ path('app_link_delete', {'id': link.id}) }}" onsubmit="return confirm('Are you sure you want to delete the link from {{ link.sourceMedia.name }} to {{ link.targetMedia.name }} ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ link.id) }}">
+                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
+
     <h2>Create a link</h2>
-    Choose the destination media
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Create a new link</button>
-    {{ form_end(form) }}
+    {% if targetMediaList|length == 0 %}
+        <div class="alert alert-info" role="alert">This media is the only one. We can't create a link to another media.</div>
+    {% else %}
+        Choose the destination media
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Create a new link</button>
+        {{ form_end(form) }}
+    {% endif %}
 {% endblock %}

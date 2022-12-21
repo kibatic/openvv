@@ -18,11 +18,11 @@
 
 
 {% block body %}
-    <h1><span class="title-text-light">Edit link of the media</span> {{ link.sourceMedia.name }}</h1>
+    <h1><span class="title-text-light">Edit link From</span> {{ link.sourceMedia.name }} <span class="title-text-light">To</span> {{ link.targetMedia.name }}</h1>
 
     <div class="card" style="width: 100%; height: 40vh;">
         <div class="card-header">
-            Source Media : click on the panorama to set the link position of the source media
+            Source Media ({{ link.sourceMedia.name }}): click on the panorama to set the link position of the source media
         </div>
         <div class="card-body">
             <div
@@ -37,7 +37,7 @@
     <br/>
     <div class="card" style="width: 100%; height: 40vh;">
         <div class="card-header">
-            Target Media : move the panorama to set the eyes direction on the target media
+            Target Media ({{ link.targetMedia.name }}): move the panorama to set the eyes direction on the target media
         </div>
         <div class="card-body">
             <div
@@ -50,6 +50,11 @@
         </div>
     </div>
 
+    <br/>
+    <form style="display: inline" method="post" action="{{ path('app_link_delete', {'id': link.id}) }}" onsubmit="return confirm('Are you sure you want to delete the link from {{ link.sourceMedia.name }} to {{ link.targetMedia.name }} ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ link.id) }}">
+        <button class="btn btn-outline-danger btn-sm">Delete link</button>
+    </form>
 {% endblock %}
 
 {% block aside %}

@@ -31,6 +31,14 @@ class LinkRepository extends ServiceEntityRepository
         }
     }
 
+    public function getBackLink(Link $link): ?Link
+    {
+        return $this->findOneBy([
+            'sourceMedia' => $link->getTargetMedia(),
+            'targetMedia' => $link->getSourceMedia(),
+        ]);
+    }
+
     public function remove(Link $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -72,14 +80,4 @@ class LinkRepository extends ServiceEntityRepository
         }
         return array_values($links);
     }
-
-//    public function findOneBySomeField($value): ?Link
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
