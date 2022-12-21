@@ -58,7 +58,19 @@ class VirtualVisitRenderer extends AbstractRenderer
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
                 'pitch' => $link->getSourcePitch(),
-                'yaw' => $link->getSourceYaw()
+                'yaw' => $link->getSourceYaw(),
+                'markerStyle' => [
+                    'html' => null,
+                    'image' => '/assets/pin-red.png'
+                    //'html' => 'tutu', // an SVG provided by the plugin
+//                    'size' => [ 'width' => 100, 'height'=> 100 ],
+//                    'scale' => [0.5, 2],
+//                    'anchor' => 'top center',
+//                    'className' => 'psv-virtual-tour__marker',
+//                    'style' => [
+//                      'color' => 'rgba(255, 255, 128, 1)',
+//                    ]
+                ],
             ];
         }
         return $projectLinks;
