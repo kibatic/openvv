@@ -27,7 +27,7 @@ const viewer = new Viewer({
             transition : false
         }],
         [AutorotatePlugin, {
-            autostartDelay: 30000,
+            autostartDelay: 60000,
             autostartOnIdle: false,
         }],
         [MarkersPlugin, {
