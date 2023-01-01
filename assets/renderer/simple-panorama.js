@@ -1,5 +1,4 @@
 import { Viewer } from '@photo-sphere-viewer/core';
-import { AutorotatePlugin } from '@photo-sphere-viewer/autorotate-plugin';
 
 const container = document.querySelector('#viewer');
 
@@ -12,16 +11,10 @@ const viewer = new Viewer({
     defaultYaw: initialPosition.yaw,
     defaultPitch: initialPosition.pitch,
     navbar: [
-        'autorotate',
+        'zoom',
+        'move',
+        'download',
         'caption',
         'fullscreen',
-    ],
-    plugins: [
-        [AutorotatePlugin, {
-            autostartDelay: 30000,
-            autostartOnIdle: false,
-        }]
-    ],
+    ]
 });
-const autorotate = viewer.getPlugin(AutorotatePlugin);
-autorotate.stop();

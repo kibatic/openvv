@@ -1,8 +1,6 @@
 import { Viewer } from '@photo-sphere-viewer/core';
 import { VirtualTourPlugin } from '@photo-sphere-viewer/virtual-tour-plugin';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
-import {GalleryPlugin} from "@photo-sphere-viewer/gallery-plugin";
-import {AutorotatePlugin} from "@photo-sphere-viewer/autorotate-plugin";
 
 const container = document.querySelector('#viewer');
 
@@ -16,7 +14,9 @@ const viewer = new Viewer({
     defaultYaw: nodes[0].defaultYaw,
     defaultPitch: nodes[0].defaultPitch,
     navbar: [
-        'autorotate',
+        'zoom',
+        'move',
+        'download',
         'caption',
         'fullscreen',
     ],
@@ -25,10 +25,6 @@ const viewer = new Viewer({
             positionMode: 'manual',
             renderMode  : 'markers',
             transition : false
-        }],
-        [AutorotatePlugin, {
-            autostartDelay: 60000,
-            autostartOnIdle: false,
         }],
         [MarkersPlugin, {
         }]
@@ -49,6 +45,3 @@ virtualTour.addEventListener('node-changed', ({node, data}) => {
         viewer.rotate(mediaRotations[node.id]);
     }
 });
-
-const autorotate = viewer.getPlugin(AutorotatePlugin);
-autorotate.stop();
