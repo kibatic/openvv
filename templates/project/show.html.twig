@@ -12,29 +12,32 @@
 
 {% block body %}
     <h1><span class="title-text-light">Projet</span> {{ project.name }}</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Rendering</th>
-                <td>{{ project.renderer.name }}</td>
-            </tr>
-            <tr>
-                <th>Sharing URL</th>
-                <td>
+    <div class="container">
+        <div class="row gy-2">
+            <div class="card">
+                <div class="card-header">
+                    Sharing
+                </div>
+                <div class="card-body">
                     {% if project.isShareActive %}
-                    <a href="{{ url('app_renderer_view', {shareUid: project.shareUid}) }}">{{ url('app_renderer_view', {shareUid: project.shareUid}) }}</a><br/>
+                        Shared until {{ project.shareEndedAt|date('m/d/Y') }}<br/>
+                        Shared URL : <a href="{{ url('app_renderer_view', {shareUid: project.shareUid}) }}">{{ url('app_renderer_view', {shareUid: project.shareUid}) }}</a><br/>
                     {% else %}
                         Not shared
                     {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Informations
+                </div>
+                <div class="card-body">
+                    Rendering : {{ project.renderer.name }}<br/>
+                    Created at : {{ project.createdAt|date('Y-m-d H:i:s') }}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <a href="{{ path('app_project_edit', {id: project.id}) }}" class="btn btn-primary">edit</a>
     <a href="{{ path('app_renderer_preview', {id: project.id}) }}" class="btn btn-primary">preview</a>

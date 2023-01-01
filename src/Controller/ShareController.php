@@ -36,7 +36,7 @@ class ShareController extends AbstractController
             $project->setShareStartedAt(new \DateTimeImmutable());
             $projectRepository->save($project, true);
 
-            return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
 
 
