@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     public function index(Request $request): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->forward('App\Controller\ProjectController::index', query: $request->query->all());
+            return $this->redirectToRoute('app_project_index');
         }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
