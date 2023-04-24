@@ -1,11 +1,12 @@
-FROM kibatic/symfony:8.1 AS base
+FROM kibatic/symfony:8.2 AS base
 
 RUN apt-get -qqq update && DEBIAN_FRONTEND=noninteractive apt-get install -qqq -y \
         acl \
-        php8.1-pgsql \
-        php8.1-curl \
-        php8.1-zip \
-    	php8.1-imagick \
+        php8.2-pgsql \
+        php8.2-curl \
+        php8.2-zip \
+    	php8.2-imagick \
+        imagemagick \
         gnupg2 && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -25,7 +26,7 @@ RUN git config --global user.email "dev@localhost"
 RUN git config --global user.name "dev"
 
 ADD docker/nginx.conf /etc/nginx/nginx.conf
-ADD docker/20-tuning.ini /etc/php/8.1/fpm/conf.d/20-tuning.ini
+ADD docker/20-tuning.ini /etc/php/8.2/fpm/conf.d/20-tuning.ini
 
 # hack : si le CMD est pris dans le cache, il ajoute un bach -c #(nop) devant la commande
 # => on remet la commande ici pour qu'elle soit rebuildée à chaque fois
@@ -38,11 +39,11 @@ ENV PERFORMANCE_OPTIM false
 
 # XDebug
 RUN apt-get -qqq update && DEBIAN_FRONTEND=noninteractive apt-get install -qqq -y \
-        php8.1-xdebug && \
+        php8.2-xdebug && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-        rm /etc/php/8.1/fpm/conf.d/20-xdebug.ini && \
-        rm /etc/php/8.1/cli/conf.d/20-xdebug.ini
+        rm /etc/php/8.2/fpm/conf.d/20-xdebug.ini && \
+        rm /etc/php/8.2/cli/conf.d/20-xdebug.ini
 
 FROM base AS prod
 
