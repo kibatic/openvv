@@ -28,6 +28,18 @@
 
     <br/>
     <a href="{{ path('app_media_edit', {id: media.id}) }}" class="btn btn-primary">Edit</a>
+
+    <form method="post"  style="display:inline" action="{{ path('app_media_toggle-filters', {'id': media.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('toggleFilters' ~ media.id) }}">
+        <button class="btn btn-outline-primary">
+            {% if media.isLuminosityFilterApplied %}
+                Remove luminosity filter
+            {% else %}
+                Apply luminosity filter
+            {% endif %}
+        </button>
+    </form>
+
     <form method="post"  style="display:inline" action="{{ path('app_media_delete', {'id': media.id}) }}" onsubmit="return confirm('Are you sure you want to delete the media {{ media.name }}?');">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ media.id) }}">
         <button class="btn btn-outline-danger">Delete</button>

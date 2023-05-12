@@ -27,6 +27,7 @@ class MediaController extends AbstractController
         Project $project,
         Request $request,
         EntityManagerInterface $entityManager,
+        MediaManager $mediaManager
     ): Response {
         // deny access if the user is not logged in
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -39,6 +40,7 @@ class MediaController extends AbstractController
         // create form for a new Media
         $media = new Media();
         $media->setProject($project);
+        $media->setIsLuminosityFilterApplied(true);
         $form = $this->createForm(MediaType::class, $media);
 
         $form->handleRequest($request);
@@ -46,6 +48,8 @@ class MediaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($media);
             $entityManager->flush();
+            // here an event is dispatched by vich_uploader. This event generated the
+            // filtered versions of the media and the thumbnail
             $this->addFlash('success', 'Media created successfully.');
             return $this->redirectToRoute('app_media_edit', ['id' => $media->getId()]);
         }
@@ -122,6 +126,7 @@ class MediaController extends AbstractController
     public function edit(
         Media $media,
         Request $request,
+        MediaManager $mediaManager,
         EntityManagerInterface $entityManager
     ): Response {
         // deny access if the user is not logged in
@@ -139,6 +144,10 @@ class MediaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($media);
             $entityManager->flush();
+            // here an event is dispatched by vich_uploader. This event generated the
+            // filtered versions of the media and the thumbnail
+            // this event is dispatched only if the media is modified.
+
             // add flash message
             $this->addFlash('success', 'Media updated successfully.');
             // redirect to the project show page
@@ -149,6 +158,41 @@ class MediaController extends AbstractController
             'media' => $media,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route(
+        '/media/{id}/toggle-filters',
+        name: 'app_media_toggle-filters',
+        methods: ['POST']
+    )]
+    public function toggleFilters(
+        Media $media,
+        MediaManager $mediaManager,
+        MediaRepository $mediaRepository,
+        Request $request
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        // deny if the user is not the owner of the project
+        if ($user !== $media->getProject()->getOwner()) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+
+        if (!$this->isCsrfTokenValid('toggleFilters'.$media->getId(), $request->request->get('_token'))) {
+            $this->addFlash('warning', 'Invalid CSRF token. Filters not applied.');
+            return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
+        }
+
+        $media->setIsLuminosityFilterApplied(!$media->isLuminosityFilterApplied());
+        $mediaRepository->save($media, true);
+        $mediaManager->applyFiltersToMedia($media, true);
+        $mediaManager->generateThumbnail($media, true);
+
+        // add flash message
+        $this->addFlash('success', 'Panorama modified.');
+        // redirect to the project show page
+        return $this->redirectToRoute('app_media_show', ['id' => $media->getId()]);
     }
 
     #[Route('/media/{id}/delete', name: 'app_media_delete', methods: ['POST'])]

@@ -5,6 +5,10 @@ flysystem:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/storage/media'
+        originalMedia.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/originalMedia'
         thumbnail.storage:
             adapter: 'local'
             options:
@@ -16,6 +20,10 @@ when@test:
                 adapter: 'local'
                 options:
                     directory: '%kernel.project_dir%/var/test/storage/media'
+            filteredMedia.storage:
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/test/storage/filteredMedia'
             thumbnail.storage:
                 adapter: 'local'
                 options:

@@ -22,6 +22,10 @@ class MediaType extends AbstractType
                 'required' => false,
                 'label' => 'Media',
             ])
+            ->add('isLuminosityFilterApplied', null, [
+                'required' => false,
+                'label' => 'Automatically adjust luminosity',
+            ])
         ;
     }
 

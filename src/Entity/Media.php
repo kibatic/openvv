@@ -59,6 +59,9 @@ class Media
     #[ORM\Column(nullable: true)]
     private ?float $initialYaw = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isLuminosityFilterApplied = null;
+
     // create constructor
     public function __construct()
     {
@@ -66,6 +69,7 @@ class Media
         $this->fromMeLinks = new ArrayCollection();
         $this->toMeLinks = new ArrayCollection();
         $this->orderInProject = 0;
+        $this->isLuminosityFilterApplied = false;
     }
 
     public function __toString(): string
@@ -314,6 +318,18 @@ class Media
     public function setInitialYaw(?float $initialYaw): self
     {
         $this->initialYaw = $initialYaw;
+
+        return $this;
+    }
+
+    public function isLuminosityFilterApplied(): ?bool
+    {
+        return $this->isLuminosityFilterApplied;
+    }
+
+    public function setIsLuminosityFilterApplied(bool $isLuminosityFilterApplied): self
+    {
+        $this->isLuminosityFilterApplied = $isLuminosityFilterApplied;
 
         return $this;
     }

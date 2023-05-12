@@ -26,6 +26,7 @@ class GenerateThumbnailSubscriber implements EventSubscriberInterface
     {
         /** @var Media $media */
         $media = $event->getObject();
+        $this->mediaManager->applyFiltersToMedia($media, true);
         $this->mediaManager->generateThumbnail($media, true);
     }
 }

@@ -3,7 +3,7 @@
 # internally used constants
 TMP_DIR=/tmp
 INI_FILE_NAME_XDEBUG=20-xdebug.ini
-PHP_VERSION=8.1
+PHP_VERSION=8.2
 CONTAINER_SERVICE=web
 CONTAINER_ID=$(docker compose ps -q ${CONTAINER_SERVICE})
 # can be coverage or debug
