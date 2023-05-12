@@ -126,7 +126,6 @@ class MediaController extends AbstractController
     public function edit(
         Media $media,
         Request $request,
-        MediaManager $mediaManager,
         EntityManagerInterface $entityManager
     ): Response {
         // deny access if the user is not logged in
