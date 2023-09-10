@@ -54,11 +54,13 @@ class VirtualVisitRenderer extends AbstractRenderer
         }
 
         $projectLinks = [];
+        $depthCnt = 1;
         foreach ($links as $link) {
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
                 'pitch' => $link->getSourcePitch(),
                 'yaw' => $link->getSourceYaw(),
+                'linkOffset' => ['depth' => $depthCnt/5.0],
                 'markerStyle' => [
                     'html' => null,
                     'image' => '/assets/pin-red.png'
@@ -72,6 +74,7 @@ class VirtualVisitRenderer extends AbstractRenderer
 //                    ]
                 ],
             ];
+            $depthCnt++;
         }
         return $projectLinks;
     }
