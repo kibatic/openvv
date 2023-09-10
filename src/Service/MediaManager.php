@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Media;
+use App\Entity\Project;
+use App\Repository\MediaRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Process\Process;
 
@@ -11,7 +14,9 @@ class MediaManager
     public function __construct(
         private FilesystemOperator $originalMediaStorage,
         private FilesystemOperator $thumbnailStorage,
-        private FilesystemOperator $mediaStorage
+        private FilesystemOperator $mediaStorage,
+        private MediaRepository $mediaRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -78,5 +83,15 @@ class MediaManager
     {
         $process = new Process(['convert', $srcFile, '-thumbnail', '200x200', $targetFile]);
         $process->mustRun();
+    }
+
+    public function mediaReverseOrder(Project $project): void
+    {
+        // get media list for $project ordered by position
+        $mediaList = $this->mediaRepository->findByProject($project);
+        foreach ($mediaList as $media) {
+            $media->setOrderInProject((count($mediaList) - $media->getOrderInProject()) - 1);
+        }
+        $this->entityManager->flush();
     }
 }

@@ -11,6 +11,7 @@ use App\Form\ImportType;
 use App\Form\ProjectType;
 use App\Repository\MediaRepository;
 use App\Repository\ProjectRepository;
+use App\Service\MediaManager;
 use Kibatic\DatagridBundle\Grid\GridBuilder;
 use Kibatic\DatagridBundle\Grid\Template;
 use Kibatic\DatagridBundle\Grid\Theme;
@@ -18,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Uuid;
@@ -302,5 +304,36 @@ class ProjectController extends AbstractController
         }
 
         return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route(
+        '/project/{project}/media-reverse-order',
+        name: 'app_projet_media_reverse_order',
+        methods: ['POST']
+    )]
+    public function mediaReverseOrder(
+        Project $project,
+        MediaManager $mediaManager,
+        Request $request,
+    ): Response {
+        // deny access if the user is not logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // get current user
+        $user = $this->getUser();
+
+        // deny access if the user is not the owner of the project
+        if ($project->getOwner() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->isCsrfTokenValid('reverseorder'.$project->getId(), $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
+
+        $mediaManager->mediaReverseOrder($project);
+        return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
+
     }
 }

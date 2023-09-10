@@ -57,6 +57,10 @@
 {% block aside %}
     <h2>Médias</h2>
     <a href="{{ path('app_media_new', {'project': project.id}) }}" class="btn btn-primary">Ajouter un média</a>
+    <form style="display:inline" method="post" action="{{ path('app_projet_media_reverse_order', {'project': project.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('reverseorder' ~ project.id) }}">
+        <button class="btn btn-outline-primary">Reverse order</button>
+    </form>
 
     {% include grid.theme ~ '/datagrid.html.twig' %}
 {% endblock %}
