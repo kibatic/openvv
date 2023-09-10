@@ -190,6 +190,7 @@ class ProjectController extends AbstractController
         ;
         $grid = $gridBuilder
             ->create($queryBuilder, $request)
+            ->setItemsPerPage(100)
             ->setTheme(Theme::BOOTSTRAP5)
             ->addColumn(
                 'Media',
