@@ -40,10 +40,6 @@ class VirtualVisitRenderer extends AbstractRenderer
     {
         $linksBySource = $this->linkRepository->createQueryBuilder('l')
             ->where('l.sourceMedia = :media')
-            ->andWhere('l.sourceYaw IS NOT NULL')
-            ->andWhere('l.sourcePitch IS NOT NULL')
-            ->andWhere('l.targetYaw IS NOT NULL')
-            ->andWhere('l.targetPitch IS NOT NULL')
             ->setParameter('media', $media)
             ->getQuery()->getResult()
         ;

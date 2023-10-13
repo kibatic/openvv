@@ -23,7 +23,7 @@ const viewer = new Viewer({
     plugins: [
         [VirtualTourPlugin, {
             positionMode: 'manual',
-            renderMode  : '3d',
+            renderMode  : '3d', // '3d' or 'markers'
             transition : false
         }],
         [MarkersPlugin, {
