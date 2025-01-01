@@ -8,12 +8,14 @@
 const $ = require('jquery');
 require('bootstrap');
 
-// any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
+
+// any CSS you import will output into a single css file (app.css in this case)
 import '@photo-sphere-viewer/core/index.scss';
 import '@photo-sphere-viewer/gallery-plugin/index.scss';
 import '@photo-sphere-viewer/virtual-tour-plugin/index.scss';
 import '@photo-sphere-viewer/markers-plugin/index.scss';
+
 
 // start the Stimulus application
 import './bootstrap';

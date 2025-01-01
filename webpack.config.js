@@ -63,7 +63,14 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader()
+//    .enableSassLoader()
+
+    // add variables to scss
+    .enableSassLoader((options) => {
+        options.additionalData = `
+            @use "./assets/styles/_variables.scss" as *;
+        `;
+    })
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
