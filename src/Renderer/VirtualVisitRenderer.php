@@ -52,10 +52,20 @@ class VirtualVisitRenderer extends AbstractRenderer
         $projectLinks = [];
         $depthCnt = 1;
         foreach ($links as $link) {
+            // Le plugin virtual-tour (mode manuel) exige une position pour chaque
+            // lien. On ignore donc les liens dont la position sur l'image source
+            // n'a pas encore été définie.
+            if ($link->getSourceYaw() === null || $link->getSourcePitch() === null) {
+                continue;
+            }
             $projectLinks[] = [
                 'nodeId' => 'pano-'.$link->getTargetMedia()->getId(),
-                'pitch' => $link->getSourcePitch(),
-                'yaw' => $link->getSourceYaw(),
+                // Depuis Photo Sphere Viewer 5, la position du lien doit être
+                // fournie dans la clé `position` (et non à la racine du lien).
+                'position' => [
+                    'yaw' => $link->getSourceYaw(),
+                    'pitch' => $link->getSourcePitch(),
+                ],
                 'linkOffset' => ['depth' => $depthCnt/5.0],
                 'markerStyle' => [
                     'html' => null,

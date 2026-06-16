@@ -6,10 +6,7 @@ const initialPosition = JSON.parse(container.dataset.initialPosition);
 
 const viewer = new Viewer({
     container: container,
-    panorama: container.dataset.panorama,
     caption: container.dataset.caption,
-    defaultYaw: initialPosition.yaw,
-    defaultPitch: initialPosition.pitch,
     navbar: [
         'zoom',
         'move',
@@ -18,3 +15,8 @@ const viewer = new Viewer({
         'fullscreen',
     ]
 });
+
+// On impose la position au chargement : sans l'option `position`, Photo Sphere
+// Viewer applique les métadonnées XMP/GPano de l'image (souvent 0,0) et écrase
+// l'orientation enregistrée. Voir mediaEdit.js pour le détail.
+viewer.setPanorama(container.dataset.panorama, { position: initialPosition });

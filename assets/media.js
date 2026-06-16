@@ -10,10 +10,6 @@ const initialPosition = JSON.parse(container.dataset.initialPosition);
 
 const viewer = new Viewer({
     container: container,
-    panorama: panorama,
-    defaultYaw: initialPosition.yaw,
-    defaultPitch: initialPosition.pitch,
-
     plugins: [
         [MarkersPlugin, {
             markers: [
@@ -21,6 +17,12 @@ const viewer = new Viewer({
         }],
     ]
 });
+
+// On impose la position au chargement : sans l'option `position`, Photo Sphere
+// Viewer applique les métadonnées XMP/GPano de l'image (souvent 0,0) et écrase
+// l'orientation enregistrée. Voir mediaEdit.js pour le détail.
+viewer.setPanorama(panorama, { position: initialPosition });
+
 const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
 viewer.addEventListener('click', ({ data }) => {

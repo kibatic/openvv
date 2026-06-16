@@ -26,16 +26,12 @@ class GalleryRenderer extends AbstractRenderer
                 'name' => $media->getName(),
                 'panorama' => $this->getMediaUrl($media, $isPublic),
                 'thumbnail' => $this->getThumbnailUrl($media, $isPublic),
+                // Position initiale du média ; le JS la place dans options.position
+                // au moment du chargement (voir assets/renderer/gallery.js).
                 'defaultYaw' => $media->getInitialYaw(),
                 'defaultPitch' => $media->getInitialPitch(),
-                'defaultLong' => $media->getInitialYaw(),
-                'defaultLat' => $media->getInitialPitch(),
                 'options' => [
                     'caption' => $project->getName()." : ".$media->getName(),
-                    'defaultYaw' => $media->getInitialYaw(),
-                    'defaultPitch' => $media->getInitialPitch(),
-                    'longitude' => $media->getInitialYaw(),
-                    'latitude' => $media->getInitialPitch(),
                 ]
             ];
         }

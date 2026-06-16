@@ -1023,37 +1023,37 @@
     error-stack-parser "^2.0.0"
     string-width "^4.2.3"
 
-"@photo-sphere-viewer/autorotate-plugin@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/autorotate-plugin/-/autorotate-plugin-5.11.4.tgz#ef65c1f6d806bcde4f062e6599162b24c3c7b896"
-  integrity sha512-7eGnHAA75V/1+bMR9UWOvQUMq7QNhnePxnNNmsSHcWHGX0eTfjNoTY9ORbmFIO969bwJ87URWmdkeDUulXWc8g==
+"@photo-sphere-viewer/autorotate-plugin@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/autorotate-plugin/-/autorotate-plugin-5.14.1.tgz#15a8cdfb6bd00dd23b8811436ccfd4306a64a449"
+  integrity sha512-Iis0SCw6+qPfX9W4fQzGW5be7b4z7CnvEzT69irXQAqOF8Fl86mO9vOutwP4BUbXDSPOyi8yxn3q7wCyAYSrBw==
 
-"@photo-sphere-viewer/core@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/core/-/core-5.11.4.tgz#e6baece674397c8f12f233557db8e3526608b3b9"
-  integrity sha512-T3WrwJK0FxLHFHO0wBVzCGu9zYijW4pHEqcXva2HVBa0etOCDPAGmY8X03OidaDueFqsd9YGCizlW1VQzzI0yw==
+"@photo-sphere-viewer/core@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/core/-/core-5.14.1.tgz#09e2545aedc03f11e7133d6b53dacb684d352af5"
+  integrity sha512-qrwUudrX9YZms4c2shlY/H3jUP0oh9FyGEqIDr/95ulNZgKbhQ6C/i8zDQ4j8ooFR4+z5FDORQtGvLgPyX8VCA==
   dependencies:
-    three "^0.169.0"
+    three "^0.179.0"
 
-"@photo-sphere-viewer/gallery-plugin@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/gallery-plugin/-/gallery-plugin-5.11.4.tgz#cb868acbf90a62571d90ffb89b766856df903288"
-  integrity sha512-42iujfoLC4U98dtHmcmXqgUwlOM7+Zm7qFncUPwZoxAquyXyiy158hLmmaUR06uDdRY/3Q0Hkzjx4FWQIBBwrA==
+"@photo-sphere-viewer/gallery-plugin@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/gallery-plugin/-/gallery-plugin-5.14.1.tgz#037cfcf9254db343026219c9c1bfc5d6a14a6c8e"
+  integrity sha512-MzIB4Kc652yfdgPkh3xh/Kvu3XY84VkmshqZhXxa9UV4E2uNMop+vttkWeKogsaNSDT5/aEkMaFgwL/Bs/ZmRw==
 
-"@photo-sphere-viewer/markers-plugin@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/markers-plugin/-/markers-plugin-5.11.4.tgz#624cb80bc2b0434328dffbf427d0fa6de27e17f5"
-  integrity sha512-5zsLisasJcKwTyHZZpSDI/NIXZ1OhUF/MDskl0gQ6H9qEzuraVAnK+NLsz7fbXgjdOxjJdmKdrU/e+7e8jHZdg==
+"@photo-sphere-viewer/markers-plugin@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/markers-plugin/-/markers-plugin-5.14.1.tgz#15571f7932fe96d826810257cf07f1813c5f0101"
+  integrity sha512-tKMrVem19sZFVQwH6IlubEIucDD2EtwxzmWClHCEojM/+ajucuTDvO2N+I6HEqJClBcNsdHAUwA/zyY6MGOu2Q==
 
-"@photo-sphere-viewer/video-plugin@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/video-plugin/-/video-plugin-5.11.4.tgz#e322043d3ba38c2251aa860affdd1cc7ecb999e4"
-  integrity sha512-j//g6Im/f0WLaal8OCu8Qoa+4J8ibu1NY0q62Ip8r7xJdGv31kteJSl4vePL6lamtK+K9gqZabirc2L/fcSvWg==
+"@photo-sphere-viewer/video-plugin@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/video-plugin/-/video-plugin-5.14.1.tgz#813244115ff2ca14034ed279d3cd64bcfc19b763"
+  integrity sha512-7yItXiD+eS/+9lgtaE9+wXSIpdYVU0kBsBN4vNtChaoJZF3JB8WUXjYLbszKp1yhwsvZ6eNxDcMBUgYdK6CrQA==
 
-"@photo-sphere-viewer/virtual-tour-plugin@^5.11.4":
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/virtual-tour-plugin/-/virtual-tour-plugin-5.11.4.tgz#cbef9a577975f58f5c65eeb2f90fc39a427943aa"
-  integrity sha512-hhpUXUpS82DW+R3CEfH7paZ58VBCc0XOIhdSC5o6134tKxdzZG4ATLvSFeGDC2aOwSkmlzZ+RIsqXPCHPl9uVA==
+"@photo-sphere-viewer/virtual-tour-plugin@5.14.1":
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/@photo-sphere-viewer/virtual-tour-plugin/-/virtual-tour-plugin-5.14.1.tgz#161f6216c31602d366e0a35b7934b457aca9eaf8"
+  integrity sha512-PRRQXoViKAg8g1TfagKJnvLMuuOXnGN9rvWOAs7W7J+knhcAuAenPFUax1Z5FgKli45mo21NspsPf1RV9lJHkQ==
 
 "@popperjs/core@^2.11.6":
   version "2.11.8"
@@ -4170,10 +4170,10 @@ terser@^5.16.8:
     commander "^2.20.0"
     source-map-support "~0.5.20"
 
-three@^0.169.0:
-  version "0.169.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.169.0.tgz#4a62114988ad9728d73526d1f1de6760c56b4adc"
-  integrity sha512-Ed906MA3dR4TS5riErd4QBsRGPcx+HBDX2O5yYE5GqJeFQTPU+M56Va/f/Oph9X7uZo3W3o4l2ZhBZ6f6qUv0w==
+three@^0.179.0:
+  version "0.179.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.179.1.tgz#6c0b43e046eaad0f42b163143517a44ae44ed446"
+  integrity sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw==
 
 thunky@^1.0.2:
   version "1.1.0"
