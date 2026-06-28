@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\CaptchaService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +20,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
-
-    public function __construct(EmailVerifier $emailVerifier)
-    {
-        $this->emailVerifier = $emailVerifier;
+    public function __construct(
+        private readonly EmailVerifier $emailVerifier,
+        private readonly CaptchaService $captchaService,
+    ) {
     }
 
     #[Route('/register', name: 'app_register')]
@@ -38,6 +38,9 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // captcha validé : on invalide le code pour empêcher tout rejeu
+            $this->captchaService->invalidate();
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

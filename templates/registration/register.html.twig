@@ -16,6 +16,23 @@
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
+        {# Captcha image : le code attendu est généré et stocké en session par /captcha/image #}
+        <div class="mb-3">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <img id="captcha-image"
+                     src="{{ path('app_captcha_image') }}"
+                     alt="Security code"
+                     width="200" height="70"
+                     class="border rounded">
+                <button type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        onclick="document.getElementById('captcha-image').src='{{ path('app_captcha_image') }}?t=' + Date.now();">
+                    New image
+                </button>
+            </div>
+            {{ form_row(registrationForm.captcha) }}
+        </div>
+
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
