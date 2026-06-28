@@ -8,6 +8,18 @@ OpenVV (open virtual visit) : application Symfony 8.1 / PHP 8.5 permettant de cr
 
 ## Environnement de développement
 
+> **RÈGLE IMPÉRATIVE — à lire avant toute commande.**
+> PHP, Composer, Symfony Console, PHPUnit et Yarn **ne sont pas installés sur l'hôte**. Ils n'existent **que** dans le conteneur Docker `web`.
+> Toute commande PHP/Composer/Console/PHPUnit/Yarn **doit** être préfixée par `docker compose exec web …`.
+> Ne jamais lancer `php`, `composer`, `bin/console`, `bin/phpunit` ou `yarn` directement : la commande échouera (`command not found`) et le résultat sera faux.
+>
+> ```bash
+> # NON  →  php bin/console …            composer install            yarn encore dev
+> # OUI  →  docker compose exec web php bin/console …
+> #         docker compose exec web composer install
+> #         docker compose exec web yarn encore dev
+> ```
+
 Tout tourne dans Docker (services `web` PHP-FPM, `database` PostgreSQL 14, `mailer` mailcatcher). Les commandes s'exécutent dans le conteneur `web`.
 
 Premier démarrage :
