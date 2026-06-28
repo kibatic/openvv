@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\ProjectRendererEnum;
 use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
@@ -40,11 +42,32 @@ class Project
     #[ORM\Column(length: 50, nullable: true, enumType: ProjectRendererEnum::class)]
     private ?ProjectRendererEnum $renderer;
 
+    /**
+     * Médias (panoramas) rattachés au projet. Côté inverse de la relation
+     * Media::project (aucune colonne ni FK générée ici). La cascade remove +
+     * orphanRemoval garantit qu'à la suppression d'un projet, chaque média est
+     * supprimé individuellement, ce qui déclenche la suppression de ses liens
+     * (orphanRemoval sur Media) et de son fichier (Vich delete_on_remove).
+     *
+     * @var Collection<int, Media>
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Media::class, cascade: ['remove'], orphanRemoval: true)]
+    private Collection $mediaList;
+
     public function __construct()
     {
+        $this->mediaList = new ArrayCollection();
         $this->setCreatedAt(new \DateTimeImmutable());
         $this->setShareDurationInDays(30);
         $this->setRenderer(ProjectRendererEnum::SIMPLE_PANORAMA);
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMediaList(): Collection
+    {
+        return $this->mediaList;
     }
 
     public function getShareEndedAt(): ?\DateTimeImmutable

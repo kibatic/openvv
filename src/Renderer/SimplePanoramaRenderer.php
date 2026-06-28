@@ -24,7 +24,7 @@ class SimplePanoramaRenderer extends AbstractRenderer
             ->orderBy('m.orderInProject', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
         ;
     }
 

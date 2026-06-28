@@ -15,7 +15,7 @@ class GenerateThumbnailSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::POST_UPLOAD => 'onPostUpload',

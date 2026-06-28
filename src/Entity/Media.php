@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[Vich\Uploadable]
@@ -23,7 +23,7 @@ class Media
     private ?\DateTimeImmutable $createdAt = null;
 
     #[Gedmo\SortableGroup]
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'mediaList')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 

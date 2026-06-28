@@ -1,4 +1,15 @@
 {
-    "controllers": [],
+    "controllers": {
+        "@kibatic/datagrid-bundle": {
+            "checker": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "form-turbo-frame-updater": {
+                "enabled": true,
+                "fetch": "eager"
+            }
+        }
+    },
     "entrypoints": []
 }

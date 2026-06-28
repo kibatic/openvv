@@ -4,16 +4,22 @@ namespace App\Repository;
 
 use App\Entity\Media;
 use App\Entity\Project;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Gedmo\Sortable\Entity\Repository\SortableRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class MediaRepository extends SortableRepository
+/**
+ * Dépôt des médias (panoramas) d'un projet.
+ *
+ * Le tri des médias dans un projet (champ orderInProject) est géré par
+ * l'extension Gedmo Sortable, via les attributs #[Gedmo\SortableGroup] /
+ * #[Gedmo\SortablePosition] de l'entité Media et l'écouteur Doctrine
+ * enregistré par StofDoctrineExtensionsBundle — pas par ce dépôt.
+ */
+class MediaRepository extends ServiceEntityRepository
 {
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ManagerRegistry $registry)
     {
-        $class = new ClassMetadata(Media::class);
-        parent::__construct($em, $class);
+        parent::__construct($registry, Media::class);
     }
 
     public function save(Media $entity, bool $flush = false): void
@@ -47,14 +53,4 @@ class MediaRepository extends SortableRepository
             ->getResult()
         ;
     }
-
-//    public function findOneBySomeField($value): ?Media
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -1,30 +1,29 @@
 # Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
+# Format « discoverable » (adaptateur en clé) introduit en flysystem-bundle 3.5,
+# remplaçant l'ancien couple "adapter" + "options".
 flysystem:
     storages:
         media.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/var/storage/media'
         originalMedia.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/var/storage/originalMedia'
         thumbnail.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/var/storage/thumbnail'
 when@test:
     flysystem:
         storages:
             media.storage:
-                adapter: 'local'
-                options:
+                local:
                     directory: '%kernel.project_dir%/var/test/storage/media'
+            originalMedia.storage:
+                local:
+                    directory: '%kernel.project_dir%/var/test/storage/originalMedia'
             filteredMedia.storage:
-                adapter: 'local'
-                options:
+                local:
                     directory: '%kernel.project_dir%/var/test/storage/filteredMedia'
             thumbnail.storage:
-                adapter: 'local'
-                options:
+                local:
                     directory: '%kernel.project_dir%/var/test/storage/thumbnail'

@@ -20,7 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -46,7 +46,7 @@ class ProjectController extends AbstractController
             ->orderBy('p.createdAt', 'DESC');
         ;
         $grid = $gridBuilder
-            ->create($queryBuilder, $request)
+            ->initialize($queryBuilder, request: $request)
             ->setTheme(Theme::BOOTSTRAP5)
             ->addColumn(
                 'Name',
@@ -123,7 +123,7 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('project/new.html.twig', [
+        return $this->render('project/new.html.twig', [
             'project' => $project,
             'form' => $form,
         ]);
@@ -160,7 +160,7 @@ class ProjectController extends AbstractController
             $this->addFlash('success', 'Project imported successfully.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('project/import.html.twig', [
+        return $this->render('project/import.html.twig', [
             'form' => $form,
         ]);
     }
@@ -191,7 +191,7 @@ class ProjectController extends AbstractController
             ->orderBy('m.orderInProject', 'ASC')
         ;
         $grid = $gridBuilder
-            ->create($queryBuilder, $request)
+            ->initialize($queryBuilder, request: $request)
             ->setItemsPerPage(100)
             ->setTheme(Theme::BOOTSTRAP5)
             ->addColumn(
@@ -279,7 +279,7 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('project/edit.html.twig', [
+        return $this->render('project/edit.html.twig', [
             'project' => $project,
             'form' => $form,
         ]);

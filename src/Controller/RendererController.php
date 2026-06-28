@@ -8,16 +8,17 @@ use App\Renderer\GalleryRenderer;
 use App\Renderer\SimplePanoramaRenderer;
 use App\Renderer\VirtualVisitRenderer;
 use App\Repository\MediaRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class RendererController extends AbstractController
 {
     #[Route('/view/{shareUid}', name: 'app_renderer_view', methods: ['GET'])]
     public function view(
-        Project $project,
+        #[MapEntity(mapping: ['shareUid' => 'shareUid'])] Project $project,
         MediaRepository $mediaRepository,
         GalleryRenderer $galleryRenderer,
         VirtualVisitRenderer $virtualVisitRenderer,

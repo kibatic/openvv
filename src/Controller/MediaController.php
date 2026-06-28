@@ -14,11 +14,11 @@ use App\Repository\MediaRepository;
 use App\Service\MediaManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MediaController extends AbstractController
 {
@@ -236,11 +236,9 @@ class MediaController extends AbstractController
     }
 
     #[Route('/share/{shareUid}/media/{id}/download-public', name: 'app_media_download_public', methods: ['GET'])]
-    #[ParamConverter('project', options: ['mapping' => ['shareUid' => 'shareUid']])]
-    #[ParamConverter('media', options: ['mapping' => ['id' => 'id']])]
     public function downloadPublic(
-        Project $project,
-        Media $media,
+        #[MapEntity(mapping: ['shareUid' => 'shareUid'])] Project $project,
+        #[MapEntity(mapping: ['id' => 'id'])] Media $media,
         FilesystemOperator $mediaStorage
     ): Response {
         if (!$project->isShareActive()) {
@@ -270,11 +268,9 @@ class MediaController extends AbstractController
     }
 
     #[Route('/vich/{userId}/{projectId}/{filename}', name: 'app_media_vich', methods: ['GET'])]
-    #[ParamConverter('user', options: ['mapping' => ['userId' => 'id']])]
-    #[ParamConverter('project', options: ['mapping' => ['projectId' => 'id']])]
     public function vich(
-        User $user,
-        Project $project,
+        #[MapEntity(mapping: ['userId' => 'id'])] User $user,
+        #[MapEntity(mapping: ['projectId' => 'id'])] Project $project,
         string $filename,
         FilesystemOperator $thumbnailStorage,
         MediaManager $mediaManager
@@ -295,11 +291,9 @@ class MediaController extends AbstractController
     }
 
     #[Route('/share/{shareUid}/media/{id}/thumbnail', name: 'app_media_thumbnail_public', methods: ['GET'])]
-    #[ParamConverter('project', options: ['mapping' => ['shareUid' => 'shareUid']])]
-    #[ParamConverter('media', options: ['mapping' => ['id' => 'id']])]
     public function thumbnailPublic(
-        Project $project,
-        Media $media,
+        #[MapEntity(mapping: ['shareUid' => 'shareUid'])] Project $project,
+        #[MapEntity(mapping: ['id' => 'id'])] Media $media,
         FilesystemOperator $thumbnailStorage
     ): Response {
         if (!$project->isShareActive()) {

@@ -4,7 +4,7 @@ Ce fichier guide les instances de Claude Code (claude.ai/code) travaillant dans 
 
 ## Présentation
 
-OpenVV (open virtual visit) : application Symfony 6.1 / PHP 8.1+ permettant de créer des visites virtuelles à partir de panoramas 360°. Le rendu front s'appuie sur [Photo Sphere Viewer](https://photo-sphere-viewer.js.org/) v5 (actuellement 5.14.x). Un utilisateur crée des projets contenant des médias (panoramas), relie ces médias entre eux par des liens orientés, puis partage publiquement le projet.
+OpenVV (open virtual visit) : application Symfony 8.1 / PHP 8.5 permettant de créer des visites virtuelles à partir de panoramas 360°. Le rendu front s'appuie sur [Photo Sphere Viewer](https://photo-sphere-viewer.js.org/) v5 (actuellement 5.14.x). Un utilisateur crée des projets contenant des médias (panoramas), relie ces médias entre eux par des liens orientés, puis partage publiquement le projet.
 
 ## Environnement de développement
 
@@ -22,6 +22,8 @@ docker compose exec web yarn encore dev   # ou: yarn encore prod en production
 ```
 
 `make permissions-dev` configure les ACL pour développer sans souci de droits sur les fichiers générés par le conteneur.
+
+Pour lancer une commande liée à PHP, il faut la lancer dans le container web : `docker compose exec web <ma commande>`
 
 ## Commandes courantes
 

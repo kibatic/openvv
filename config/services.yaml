@@ -10,6 +10,12 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        # Liaison explicite des stockages Flysystem (évite la dépréciation SF 8.1
+        # « autowiring par nom de paramètre » remplacée par #[Target]).
+        bind:
+            League\Flysystem\FilesystemOperator $mediaStorage: '@media.storage'
+            League\Flysystem\FilesystemOperator $thumbnailStorage: '@thumbnail.storage'
+            League\Flysystem\FilesystemOperator $originalMediaStorage: '@originalMedia.storage'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
