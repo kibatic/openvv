@@ -35,8 +35,6 @@ docker compose exec web yarn encore dev   # ou: yarn encore prod en production
 
 `make permissions-dev` configure les ACL pour développer sans souci de droits sur les fichiers générés par le conteneur.
 
-Pour lancer une commande liée à PHP, il faut la lancer dans le container web : `docker compose exec web <ma commande>`
-
 ## Commandes courantes
 
 ```bash
@@ -50,6 +48,9 @@ docker compose exec web php bin/phpunit --filter testExport                     
 
 # Fixtures (recrée la base de test et charge les fixtures)
 make fixtures
+
+# Initialisation de la base de dev
+make init_dev
 
 # Assets front (Webpack Encore)
 docker compose exec web yarn encore dev          # build dev
@@ -67,7 +68,7 @@ Les tests utilisent `APP_ENV=test` (forcé par `phpunit.xml.dist`) avec un stock
 
 ### Modèle de données (`src/Entity/`)
 
-- **User** — compte ; inscription avec vérification d'email (`symfonycasts/verify-email-bundle`).
+- **User** — compte ; inscription protégée par un captcha image (`CaptchaService`, code en session invalidé après usage) et soumise à vérification d'email (`symfonycasts/verify-email-bundle`).
 - **Project** — appartient à un `User` (`owner`). Porte un `renderer` (`ProjectRendererEnum`) qui détermine le mode d'affichage. Le partage public repose sur `shareUid` + `shareStartedAt` + `shareDurationInDays` (voir `isShareActive()` / `getShareEndedAt()`).
 - **Media** — un panorama d'un projet. Upload géré par `vich/uploader-bundle`. Ordonné dans le projet via `gedmo` sortable (`orderInProject`, groupe = projet). Champs `initialPitch`/`initialYaw` = position de caméra de départ ; filtre de luminosité optionnel.
 - **Link** — lien orienté entre `sourceMedia` et `targetMedia`, avec angles `sourcePitch/Yaw` (point cliquable sur le panorama source) et `targetPitch/Yaw` (orientation à l'arrivée). `isComplete()` vérifie que les 4 angles sont renseignés.
@@ -89,11 +90,11 @@ Trois stockages Flysystem locaux (config `config/packages/flysystem.yaml`), pipe
 2. **media.storage** — image servie, après application éventuelle du filtre de luminosité (Imagick via `symfony/process`).
 3. **thumbnail.storage** — vignette générée.
 
-`GenerateThumbnailSubscriber` écoute l'événement Vich `POST_UPLOAD` et déclenche `applyFiltersToMedia()` + `generateThumbnail()`. Le sous-dossier de stockage par média vient de `Media::vichDirectoryName()`.
+`GenerateThumbnailSubscriber` (`src/Subscriber/` — pas `src/EventSubscriber/`) écoute l'événement Vich `POST_UPLOAD` et déclenche `applyFiltersToMedia()` + `generateThumbnail()`. Le sous-dossier de stockage par média vient de `Media::vichDirectoryName()`.
 
 ### Export / Import (`src/ExportImport/`)
 
-`Exporter` / `Importer` sérialisent un projet complet (médias + liens, avec remappage des IDs) en JSON pour la sauvegarde/restauration. C'est la logique la plus testée du projet (`tests/ExportImport/`).
+`Exporter` / `Importer` sauvegardent/restaurent un projet complet sous forme d'archive ZIP : `data.json` (projet + médias + liens, IDs remappés à l'import) accompagné des fichiers images (`media/`) et vignettes (`thumbnail/`). C'est la logique la plus testée du projet (`tests/ExportImport/`).
 
 ### Front-end
 
@@ -124,3 +125,13 @@ Firewall `main` avec `form_login` (CSRF activé) et `VerifiedUserChecker` (refus
 
 - Code et entités commentés en français (utilité de la classe en tête, champs non évidents).
 - Toute nouvelle fonctionnalité de rendu doit être répercutée dans les **deux** actions `view` (public) et `preview` (propriétaire) de `RendererController`.
+
+## Git
+
+> **RÈGLE IMPÉRATIVE.** L'IA ne gère pas git : c'est réservé au développeur.
+> Ne jamais exécuter de commande git modifiant l'état du dépôt (`add`, `commit`, `push`, `branch`, `checkout`, `merge`, `rebase`, `stash`, `tag`, `reset`, `mv`, `rm`…), même si un plan ou un skill le suggère.
+> Seules les commandes de consultation sont autorisées (`git status`, `git diff`, `git log`, `git show`).
+
+## Documentation fonctionnelle
+
+La connaissance métier vit dans `docs/features/*.md` (une fiche par fonctionnalité). Le skill projet `connaissance-metier` (`.claude/skills/connaissance-metier/SKILL.md`) impose le processus : lire les fiches concernées avant tout développement, les mettre à jour avant de déclarer le travail terminé. Invoquer ce skill au début de chaque demande de développement ou question fonctionnelle.
