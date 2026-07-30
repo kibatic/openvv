@@ -15,6 +15,8 @@ Un visiteur peut créer un compte pour ensuite créer et partager des visites vi
 
 - Le captcha est une image générée côté serveur ; le code est stocké en session et invalidé dès qu'une inscription réussit (anti-rejeu). Chaque affichage de l'image régénère un nouveau code.
 - Un compte non vérifié ne peut pas se connecter (`VerifiedUserChecker`).
+- Un compte désactivé par un administrateur ne peut pas se connecter, et sa session en cours est invalidée (voir [administration](administration.md)).
+- La date de dernière connexion réussie est enregistrée sur le compte (`lastLoginAt`).
 - La connexion utilise un formulaire classique avec protection CSRF.
 
 ## Points d'entrée dans le code

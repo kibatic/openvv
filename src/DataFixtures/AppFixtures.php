@@ -39,6 +39,16 @@ class AppFixtures extends Fixture
         ;
         $manager->persist($bob);
 
+        $admin = new User();
+        $admin
+            ->setEmail('admin@example.com')
+            // this is the hash for "testpass"
+            ->setPassword('$2y$13$hYZbAxA7.ySISMjHFKey..ANu44yDe1Ce1rQ1D86k8tPFdKywYAKC')
+            ->setIsVerified(true)
+            ->setRoles(['ROLE_ADMIN'])
+        ;
+        $manager->persist($admin);
+
         $project = new Project();
         $project
             ->setName('ExportedProject')

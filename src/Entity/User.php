@@ -5,13 +5,19 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Compte utilisateur de l'application. Identifié par un email, protégé par
+ * mot de passe, soumis à vérification d'email avant la première connexion.
+ * Un compte peut être désactivé par un administrateur (connexion refusée).
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,6 +41,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * Date de dernière connexion réussie ; null tant que l'utilisateur
+     * ne s'est jamais connecté.
+     */
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastLoginAt = null;
+
+    /**
+     * Compte actif ou non : un compte désactivé par un administrateur
+     * ne peut plus se connecter.
+     */
+    #[ORM\Column(options: ['default' => true])]
+    private bool $enabled = true;
 
     public function __construct()
     {
@@ -136,6 +156,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getLastLoginAt(): ?\DateTimeImmutable
+    {
+        return $this->lastLoginAt;
+    }
+
+    public function setLastLoginAt(?\DateTimeImmutable $lastLoginAt): self
+    {
+        $this->lastLoginAt = $lastLoginAt;
+
+        return $this;
+    }
+
+    /**
+     * Invalide la session existante si le compte vient d'être désactivé,
+     * si le mot de passe a changé ou si les rôles ont changé (sans cela,
+     * un admin rétrogradé garderait ses droits jusqu'à déconnexion).
+     *
+     * @see EquatableInterface
+     */
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        $currentRoles = $this->getRoles();
+        $refreshedRoles = $user->getRoles();
+        sort($currentRoles);
+        sort($refreshedRoles);
+
+        return $user->isEnabled()
+            && $this->password === $user->getPassword()
+            && $this->email === $user->getEmail()
+            && $currentRoles === $refreshedRoles;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }

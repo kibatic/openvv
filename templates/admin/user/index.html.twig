@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users administration{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">Users administration</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Users administration</h1>
+
+    {% include grid.theme ~ '/datagrid.html.twig' %}
+{% endblock %}

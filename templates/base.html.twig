@@ -28,6 +28,11 @@
                                 <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
                             </li>
                             {%- if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {%- if is_granted('ROLE_ADMIN') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('app_admin_user_index') }}">Admin</a>
+                                    </li>
+                                {%- endif %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
                                 </li>

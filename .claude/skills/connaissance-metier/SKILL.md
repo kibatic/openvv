@@ -20,6 +20,7 @@ La connaissance fonctionnelle du projet vit dans `docs/features/*.md` (une fiche
 | [rendu-visites](../../../docs/features/rendu-visites.md) | 3 modes d'affichage, chemins view (public) / preview (propriétaire) |
 | [partage-public](../../../docs/features/partage-public.md) | shareUid, durée limitée, activation/réactivation/suppression |
 | [export-import](../../../docs/features/export-import.md) | Archive ZIP autoporteuse, remappage des IDs à l'import |
+| [administration](../../../docs/features/administration.md) | Gestion des comptes par un admin : liste, activation/désactivation, changement de rôle, suppression |
 
 ## Processus imposé
 
@@ -32,6 +33,10 @@ La connaissance fonctionnelle du projet vit dans `docs/features/*.md` (une fiche
 ### Pendant la planification
 
 Tout plan de développement inclut explicitement une étape « Mettre à jour docs/features et la carte du skill ». Un plan sans cette étape est incomplet.
+
+### Historiser les développements
+
+Dans docs/history.md, écrire un résumé des développements jour par jour (avec le dernier jour en haut).
 
 ### Avant de déclarer le travail terminé
 
