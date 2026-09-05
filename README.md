@@ -1,5 +1,11 @@
-OpenVV : open virtual visit
+OpenVV : open virtual visit : /!\ Tranfered to Gitlab /!\
 ==========================
+
+## PROJECT Transfered to GITLAB
+
+The projet in now on Gilab : [https://gitlab.com/philippe-levan/openvv](https://gitlab.com/philippe-levan/openvv)
+
+## Old version
 
 This goal of the project is to help to create virtual visits with panorama 360.
 
